@@ -1,1 +1,1 @@
-# TCG-Plattform
+# CardCollector - Online TradingCard Plattform
