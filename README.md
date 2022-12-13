@@ -1,1 +1,3 @@
-# CardCollector - Online TradingCard Plattform
+# CardCollector 
+
+the online TradingCard Plattform
