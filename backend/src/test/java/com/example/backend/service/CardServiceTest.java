@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -28,6 +29,25 @@ class CardServiceTest {
         //Then
         assertEquals(expected, result);
         verify(cardRepo).findAll();
+
+
+    }
+
+    @Test
+    void getCardByID() {
+
+        //Given
+        Card expectedCard = new Card("1", "Pikachu", "120", Collections.emptyList());
+        String id = "1";
+
+
+
+        //When
+        when(cardRepo.findById(id)).thenReturn(Optional.of(expectedCard));
+        Card actualCard = cardService.getCardByID(id);
+        //Then
+        assertEquals(expectedCard, actualCard);
+        verify(cardRepo).findById(id);
 
 
     }
