@@ -24,7 +24,7 @@ class CardControllerTest {
 
 
     @Test
-    void getAllMovies_whenListEmpty_ThenReturn() throws Exception {
+    void getAllCard_whenListEmpty_ThenReturn() throws Exception {
 
         mockMvc.perform(get("/api/cards"))
                 .andExpect(status().isOk())
