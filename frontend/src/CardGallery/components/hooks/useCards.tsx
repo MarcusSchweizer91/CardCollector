@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import axios from "axios/index";
+import axios from "axios";
 import {Card} from "../../models/Card";
 
 export default function useCards(){
