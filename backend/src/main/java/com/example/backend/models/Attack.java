@@ -2,7 +2,7 @@ package com.example.backend.models;
 
 import java.util.List;
 
-public record Attacks(
+public record Attack(
         String name,
         List <String> cost,
         String damage
