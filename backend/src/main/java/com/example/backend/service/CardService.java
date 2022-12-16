@@ -5,6 +5,8 @@ import com.example.backend.repo.CardRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class CardService {
 
@@ -17,4 +19,6 @@ public class CardService {
     public List<Card> getAllCards(){
         return cardRepo.findAll();
     }
+
+    public Optional<Card> getCardByID(String id){return cardRepo.findById(id);}
 }
