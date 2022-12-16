@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/cards")
@@ -26,5 +26,5 @@ public class CardController {
     }
 
     @GetMapping (path = "/{id}")
-    public Optional<Card> getCardByID(@PathVariable String id) {return cardService.getCardByID(id);}
+    public Card getCardByID(@PathVariable String id) {return cardService.getCardByID(id);}
 }
