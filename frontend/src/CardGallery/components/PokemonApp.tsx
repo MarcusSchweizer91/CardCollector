@@ -1,12 +1,12 @@
-import {useEffect, useState} from "react";
-import {Card} from "../models/Card";
-import axios from "axios";
+import {useState} from "react";
 import PokemonGallery from "./PokemonGallery";
 import SearchBar from "./SearchBar";
+import useCards from "./hooks/useCards";
 
 export default function PokemonApp() {
 
-    const [pokeCards, setPokeCards] = useState<Card[]>([])
+   const {pokeCards} = useCards()
+
     const [searchText, setSearchText] = useState<string>("")
 
 
@@ -22,26 +22,6 @@ export default function PokemonApp() {
 
 
 
-
-
-
-
-
-
-
-
-
-    useEffect(() => {
-        getAllCards()
-    }, [])
-
-
-    function getAllCards() {
-        axios.get("/api/cards").then((response) => {
-            setPokeCards(response.data)
-        })
-            .catch(e => console.error(e))
-    }
 
     return (
         <div>
