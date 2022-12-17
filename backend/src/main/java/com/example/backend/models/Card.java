@@ -10,6 +10,7 @@ public record Card(
         String id,
         String name,
         String hp,
-        List<Attack> attacks
+        List<Attack> attacks,
+        List<Images> images
 ) {
 }
