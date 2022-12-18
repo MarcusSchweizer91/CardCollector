@@ -30,6 +30,8 @@ export default function PokemonApp() {
                     <SearchBar handleSearchText={handleSearchOnChange}/>
                     <Routes>
                         <Route path={"/"} element={<PokemonGallery cards={filteredPokeCards}/>}></Route>
+                        <Route path={"/exchange"} element={<PokemonGallery cards={filteredPokeCards}/>}></Route>
+                        <Route path={"/user"} element={<PokemonGallery cards={filteredPokeCards}/>}></Route>
 
                     </Routes>
                 </BrowserRouter>
