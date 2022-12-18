@@ -1,6 +1,6 @@
 import {Attacks} from "./Attacks";
 import {Image} from "./Image";
-export type Card = {
+export type PokeCard = {
 
     id:string,
     name:string,
