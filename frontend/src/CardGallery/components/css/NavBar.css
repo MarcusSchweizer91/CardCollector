@@ -1,6 +1,11 @@
-.dropdown{
+.dropDownNL{
     text-decoration: none;
     color: black;
-    margin: 1.5rem 1rem;
+    margin: 1rem 1rem;
+}
+.loginDropDown{
+
+    text-decoration: none;
+    color: black;
 }
 

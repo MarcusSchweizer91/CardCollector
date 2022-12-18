@@ -3,25 +3,35 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import {Menu, MenuItem} from "@mui/material";
 import {NavLink} from "react-router-dom";
 import "../components/css/NavBar.css"
+import {AccountCircle} from "@mui/icons-material";
 
 
 export default function NavBar() {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
+
+    const [menu, setMenu] = React.useState<null | HTMLElement>(null)
+    const [userLogin, setUserLogin] = React.useState<null | HTMLElement>(null)
+
+    const open = Boolean(menu)
+    
+
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
+        setMenu(event.currentTarget);
+    }
+
     const handleClose = () => {
-        setAnchorEl(null);
+        setMenu(null)
+        setUserLogin(null)
+    }
+
+    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setUserLogin(event.currentTarget);
+
     };
-
-
 
 
     return (
@@ -44,21 +54,52 @@ export default function NavBar() {
                     </IconButton>
                     <Menu
                         id="basic-menu"
-                        anchorEl={anchorEl}
+                        anchorEl={menu}
                         open={open}
                         onClose={handleClose}
                         MenuListProps={{
                             'aria-labelledby': 'basic-button',
                         }}
                     >
-                        <MenuItem  onClick={handleClose}><NavLink className={"dropdown"} to={"/"}>AllCards</NavLink></MenuItem>
-                        <MenuItem  onClick={handleClose}><NavLink className={"dropdown"} to={"/"}>CardExchange</NavLink></MenuItem>
-                        <MenuItem  onClick={handleClose}><NavLink className={"dropdown"} to={"/"}>Settings</NavLink></MenuItem>
+                        <MenuItem  onClick={handleClose}><NavLink className={"dropDownNL"} to={"/"}>AllCards</NavLink></MenuItem>
+                        <MenuItem  onClick={handleClose}><NavLink className={"dropDownNL"} to={"/exchange"}>CardExchange</NavLink></MenuItem>
+                        <MenuItem  onClick={handleClose}><NavLink className={"dropDownNL"} to={"/user"}>MyAccount</NavLink></MenuItem>
                     </Menu>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         All Cards
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    <div>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleMenu}
+                            color="inherit"
+
+                        >
+                            <AccountCircle />
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={userLogin}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(userLogin)}
+                            onClose={handleClose}
+                        >
+                            <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"} to={"/login"}>Login</NavLink></MenuItem>
+                            <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"} to={"/newUser"}>SingUp</NavLink></MenuItem>
+                            <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"} to={"/user"}>MyAccount</NavLink></MenuItem>
+                        </Menu>
+                    </div>
                 </Toolbar>
             </AppBar>
         </Box>
