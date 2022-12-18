@@ -1,6 +1,6 @@
 import {PokeCard} from "../models/PokeCard";
 import PokemonCard from "./PokemonCard";
-import {Container, Grid, Typography} from "@mui/material";
+import { Container, Grid} from "@mui/material";
 
 type PokemonGalleryProps = {
     cards: PokeCard[]
@@ -13,15 +13,16 @@ export default function PokemonGallery(props: PokemonGalleryProps) {
     })
 
     return (
-        <div>
-            <Container>
-                <Typography variant={"h2"} align={"center"} m={2}>
-                    All Cards
-                </Typography>
-                <Grid container justifyContent={"space-evenly"}>
-                    {cardComponents}
-                </Grid>
-            </Container>
-        </div>
+        <>
+            <main>
+                <div>
+                    <Container>
+                        <Grid container justifyContent={"space-evenly"}>
+                            {cardComponents}
+                        </Grid>
+                    </Container>
+                </div>
+            </main>
+        </>
     )
 }
