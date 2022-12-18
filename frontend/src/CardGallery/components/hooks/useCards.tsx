@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {Card} from "../../models/Card";
+import {PokeCard} from "../../models/PokeCard";
 
 export default function useCards(){
 
 
-    const [pokeCards, setPokeCards] = useState<Card[]>([])
+    const [pokeCards, setPokeCards] = useState<PokeCard[]>([])
 
 
     useEffect(() => {
