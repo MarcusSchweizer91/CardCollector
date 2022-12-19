@@ -4,6 +4,7 @@ import SearchBar from "./SearchBar";
 import useCards from "./hooks/useCards";
 import NavBar from "./NavBar";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import PokemonDetails from "./PokemonDetails";
 
 export default function PokemonApp() {
 
@@ -32,11 +33,9 @@ export default function PokemonApp() {
                         <Route path={"/"} element={<PokemonGallery cards={filteredPokeCards}/>}></Route>
                         <Route path={"/exchange"} element={<PokemonGallery cards={filteredPokeCards}/>}></Route>
                         <Route path={"/user"} element={<PokemonGallery cards={filteredPokeCards}/>}></Route>
-
+                        <Route path={"/details/:id"} element={<PokemonDetails/>}></Route>
                     </Routes>
                 </BrowserRouter>
-
-
             </div>
 
         </div>
