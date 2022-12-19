@@ -1,5 +1,6 @@
 import {Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, Typography} from "@mui/material";
 import {PokeCard} from "../models/PokeCard";
+import {useNavigate} from "react-router-dom";
 
 
 type PokemonCardProps = {
@@ -10,16 +11,17 @@ type PokemonCardProps = {
 export default function PokemonCard(props: PokemonCardProps) {
 
 
-    const attacksComponents = props.card.attacks.map((attacks) => {
-        return attacks.name;
-    })
+        const navigate = useNavigate()
 
+    function handleDetailsClick(){
+        navigate("/details/" + props.card.id)
+    }
 
     return (
 
         <Grid m={6}>
             <Card>
-                <CardActionArea>
+                <CardActionArea onClick={handleDetailsClick}>
                     <CardMedia
                         component="img"
                         image={props.card.images.small}
@@ -28,12 +30,6 @@ export default function PokemonCard(props: PokemonCardProps) {
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             {props.card.name}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            {props.card.hp}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            {attacksComponents}
                         </Typography>
                     </CardContent>
                 </CardActionArea>
