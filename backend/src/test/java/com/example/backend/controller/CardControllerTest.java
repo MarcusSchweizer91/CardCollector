@@ -49,7 +49,7 @@ class CardControllerTest {
         Card card = new Card("1", "Pikachu", "120", Collections.emptyList(), image);
         Card result = cardRepo.save(card);
 
-        mockMvc.perform(get("/api/cards/" + result.id()))
+        mockMvc.perform(get("/api/cards/details/" + result.id()))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
