@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 
 import com.example.backend.models.Card;
+import com.example.backend.models.Image;
 import com.example.backend.repo.CardRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,8 @@ class CardControllerTest {
     @DirtiesContext
     void getCardById() throws Exception {
 
-        Card card = new Card("1", "Pikachu", "120", Collections.emptyList());
+        Image image = new Image("image");
+        Card card = new Card("1", "Pikachu", "120", Collections.emptyList(), image);
         Card result = cardRepo.save(card);
 
         mockMvc.perform(get("/api/cards/" + result.id()))

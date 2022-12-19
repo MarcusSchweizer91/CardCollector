@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.models.Card;
+import com.example.backend.models.Image;
 import com.example.backend.repo.CardRepo;
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +38,8 @@ class CardServiceTest {
     void getCardByID() {
 
         //Given
-        Card expectedCard = new Card("1", "Pikachu", "120", Collections.emptyList());
+        Image image = new Image("image");
+        Card expectedCard = new Card("1", "Pikachu", "120", Collections.emptyList(),image);
         String id = "1";
 
 
