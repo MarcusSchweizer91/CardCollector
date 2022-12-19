@@ -25,6 +25,6 @@ public class CardController {
         return cardService.getAllCards();
     }
 
-    @GetMapping (path = "/{id}")
+    @GetMapping (path = "/details/{id}")
     public Card getCardByID(@PathVariable String id) {return cardService.getCardByID(id);}
 }
