@@ -4,10 +4,9 @@ package com.example.backend.controller;
 import com.example.backend.models.ExchangeCard;
 import com.example.backend.models.ExchangeCardDTO;
 import com.example.backend.service.ExchangeService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/exchange")
@@ -18,6 +17,11 @@ public class ExchangeController {
 
     public ExchangeController(ExchangeService exchangeService) {
         this.exchangeService = exchangeService;
+    }
+
+    @GetMapping
+    public List<ExchangeCard> getAllEntry (){
+        return exchangeService.getAllEntries();
     }
 
     @PostMapping
