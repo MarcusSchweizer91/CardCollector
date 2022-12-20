@@ -1,10 +1,11 @@
 import {useState} from "react";
 import PokemonGallery from "./PokemonGallery";
-import SearchBar from "./SearchBar";
-import useCards from "./hooks/useCards";
-import NavBar from "./NavBar";
+import SearchBar from "../SearchBar";
+import useCards from "../hooks/useCards";
+import NavBar from "../NavBar";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import PokemonDetails from "./PokemonDetails";
+import ExchangeApp from "../CardExchange/ExchangeApp";
 
 export default function PokemonApp() {
 
@@ -31,7 +32,7 @@ export default function PokemonApp() {
                     <SearchBar handleSearchText={handleSearchOnChange}/>
                     <Routes>
                         <Route path={"/"} element={<PokemonGallery cards={filteredPokeCards}/>}></Route>
-                        <Route path={"/exchange"} element={<PokemonGallery cards={filteredPokeCards}/>}></Route>
+                        <Route path={"/exchange"} element={<ExchangeApp/>}></Route>
                         <Route path={"/user"} element={<PokemonGallery cards={filteredPokeCards}/>}></Route>
                         <Route path={"/details/:id"} element={<PokemonDetails/>}></Route>
                     </Routes>
