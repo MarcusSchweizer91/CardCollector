@@ -12,7 +12,7 @@ export default function SearchBar(props: SearchBarProps){
 
     return(
         <div>
-            <input type={"text"} placeholder={"Search for Pokemon..."} onChange={handleSearchTextChange}/>
+            <input type={"text"} placeholder={"Search..."} onChange={handleSearchTextChange}/>
         </div>
     )
 }
