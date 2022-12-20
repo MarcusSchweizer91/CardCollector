@@ -1,6 +1,6 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {PokeCard} from "../models/PokeCard";
+import {PokeCard} from "../../models/PokeCard";
 import axios from "axios";
 
 export default function PokemonDetails(){

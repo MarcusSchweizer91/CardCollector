@@ -1,4 +1,4 @@
-import {PokeCard} from "../models/PokeCard";
+import {PokeCard} from "../../models/PokeCard";
 import PokemonCard from "./PokemonCard";
 import { Container, Grid} from "@mui/material";
 
