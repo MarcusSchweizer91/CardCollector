@@ -3,10 +3,19 @@ import {CardToExchange} from "../../models/CardToExchange";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import ExchangeForm from "./ExchangeForm";
+import SearchBar from "../SearchBar";
 
 export default function ExchangeApp(){
 
     const[exchangeCards, setExchangeCards] = useState<CardToExchange[]>([])
+    const[searchText, setSearchText] = useState<string>("")
+
+
+    function handleSearchTextOnChange(searchText:string){
+        setSearchText(searchText)
+    }
+    const filteredExchangeCards = exchangeCards.filter((exchangeCard) =>
+    exchangeCard.name.toLowerCase().includes(searchText.toLowerCase()))
 
     useEffect(()=>{
         getExchangeCards()
@@ -28,7 +37,8 @@ export default function ExchangeApp(){
     return(
         <div>
             <ExchangeForm addEntry={addExchangeCard}/>
-            <ExchangeGallery entries={exchangeCards}/>
+            <SearchBar handleSearchText={handleSearchTextOnChange}/>
+            <ExchangeGallery entries={filteredExchangeCards}/>
 
         </div>
     )
