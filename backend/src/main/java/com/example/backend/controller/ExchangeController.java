@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 
 import com.example.backend.models.ExchangeCard;
+import com.example.backend.models.ExchangeCardDTO;
 import com.example.backend.service.ExchangeService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +21,7 @@ public class ExchangeController {
     }
 
     @PostMapping
-    public ExchangeCard addEntry (@RequestBody ExchangeCard entry){
+    public ExchangeCard addEntry (@RequestBody ExchangeCardDTO entry){
         return exchangeService.saveEntry(entry);
     }
 
