@@ -66,7 +66,7 @@ export default function NavBar() {
                         <MenuItem  onClick={handleClose}><NavLink className={"dropDownNL"} to={"/user"}>MyAccount</NavLink></MenuItem>
                     </Menu>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        Hier steht Ihre Überschrift
+                        {/*Placeholder*/}
                     </Typography>
                     <div>
                         <IconButton
