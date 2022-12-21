@@ -2,13 +2,13 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import {Drawer, List, ListItem, ListItemButton, ListItemText, Menu, MenuItem} from "@mui/material";
+import {Drawer, Grid, List, ListItem, ListItemButton, ListItemText, Menu, MenuItem} from "@mui/material";
 import {NavLink} from "react-router-dom";
 import "../components/css/NavBar.css"
 import {AccountCircle} from "@mui/icons-material";
+import logo from "../img/Logo2.png"
 
 type Anchor = 'left';
 
@@ -84,72 +84,74 @@ export default function NavBar() {
         <Box sx={{flexGrow: 1}}>
             <AppBar position="static">
                 <Toolbar>
-                    <div>
-                        {(['left'] as const).map((anchor) => (
-                            <React.Fragment key={anchor}>
+                    <Grid container justifyContent={"space-between"}>
+                        <div>
+                            {(['left'] as const).map((anchor) => (
+                                <React.Fragment key={anchor}>
 
-                                <IconButton
-                                    size="large"
-                                    edge="start"
-                                    color="inherit"
-                                    aria-label="menu"
-                                    sx={{mr: 2}}
-                                    id="basic-button"
-                                    aria-controls={open ? 'basic-menu' : undefined}
-                                    aria-haspopup="true"
-                                    aria-expanded={open ? 'true' : undefined}
-                                    onClick={toggleDrawer(anchor, true)}
-                                >
-                                    <MenuIcon/>
-                                </IconButton>
-                                <Drawer
-                                    anchor={anchor}
-                                    open={state[anchor]}
-                                    onClose={toggleDrawer(anchor, false)}
-                                >
-                                    {list(anchor)}
-                                </Drawer>
-                            </React.Fragment>
-                        ))}
-                    </div>
-                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                        {/*Placeholder*/}
-                    </Typography>
-                    <div>
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleMenu}
-                            color="inherit"
+                                    <IconButton
+                                        size="large"
+                                        edge="start"
+                                        color="inherit"
+                                        aria-label="menu"
+                                        sx={{mr: 2}}
+                                        id="basic-button"
+                                        aria-controls={open ? 'basic-menu' : undefined}
+                                        aria-haspopup="true"
+                                        aria-expanded={open ? 'true' : undefined}
+                                        onClick={toggleDrawer(anchor, true)}
+                                    >
+                                        <MenuIcon/>
+                                    </IconButton>
+                                    <Drawer
+                                        anchor={anchor}
+                                        open={state[anchor]}
+                                        onClose={toggleDrawer(anchor, false)}
+                                    >
+                                        {list(anchor)}
+                                    </Drawer>
+                                </React.Fragment>
+                            ))}
+                        </div>
+                        <div>
+                            <NavLink to={"/"}><img src={logo} alt={"logo"}/></NavLink>
+                        </div>
+                        <div>
+                            <IconButton
+                                size="large"
+                                aria-label="account of current user"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                onClick={handleMenu}
+                                color="inherit"
 
-                        >
-                            <AccountCircle/>
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={userLogin}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(userLogin)}
-                            onClose={handleClose}
-                        >
-                            <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"}
-                                                                     to={"/login"}>Login</NavLink></MenuItem>
-                            <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"}
-                                                                     to={"/newUser"}>SingUp</NavLink></MenuItem>
-                            <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"}
-                                                                     to={"/user"}>MyAccount</NavLink></MenuItem>
-                        </Menu>
-                    </div>
+                            >
+                                <AccountCircle/>
+                            </IconButton>
+                            <Menu
+                                id="menu-appbar"
+                                anchorEl={userLogin}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(userLogin)}
+                                onClose={handleClose}
+                            >
+                                <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"}
+                                                                         to={"/login"}>Login</NavLink></MenuItem>
+                                <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"}
+                                                                         to={"/newUser"}>SingUp</NavLink></MenuItem>
+                                <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"}
+                                                                         to={"/user"}>MyAccount</NavLink></MenuItem>
+                            </Menu>
+                        </div>
+                    </Grid>
                 </Toolbar>
             </AppBar>
         </Box>
