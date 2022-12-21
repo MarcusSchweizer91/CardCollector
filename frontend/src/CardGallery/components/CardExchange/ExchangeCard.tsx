@@ -1,5 +1,6 @@
 import {CardToExchange} from "../../models/CardToExchange";
-import {Button, Card} from "@mui/material";
+import {Button, Card, CardActionArea, CardActions, CardContent, Grid, Typography} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 
 
 type ExchangeCardProps = {
@@ -10,23 +11,55 @@ type ExchangeCardProps = {
 
 export default function ExchangeCard(props: ExchangeCardProps) {
 
+
+    const navigate = useNavigate()
+
     function onClickDelete() {
         props.deleteEntry(props.exchangeCard.id)
 
     }
 
+    function handleDetailsClick(){
+        navigate("/exchange/" + props.exchangeCard.id)
+    }
     return (
         <div>
-            <Card variant={"outlined"} sx={{m:'1rem', maxWidth:'30rem'}}>
-                <h5>{props.exchangeCard.name}</h5>
-                <p>{props.exchangeCard.description}</p>
-                <p>{props.exchangeCard.type}</p>
-                <p>{props.exchangeCard.price}</p>
-                <p>{props.exchangeCard.alternative}</p>
+            <Grid m={6}>
+                <Card>
+                    <CardActionArea onClick={handleDetailsClick}>
 
-                <Button sx={{mb:'1rem', mr:'.5rem'}} variant={'outlined'} onClick={onClickDelete}>Delete</Button>
-                <Button sx={{mb:'1rem', ml:'.5rem'}} variant={'outlined'}>Edit</Button>
-            </Card>
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="div">
+                                {props.exchangeCard.name}
+                            </Typography>
+                            <Typography gutterBottom variant="body1" component="div">
+                                {props.exchangeCard.description}
+                            </Typography>
+                            <Typography gutterBottom variant="body1" component="div">
+                                {props.exchangeCard.type}
+                            </Typography>
+                            <Typography gutterBottom variant="body1" component="div">
+                                {props.exchangeCard.price}
+                            </Typography>
+                            <Typography gutterBottom variant="body1" component="div">
+                                {props.exchangeCard.alternative}
+                            </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                    <CardActions>
+                        <Button onClick={onClickDelete} size="small" color="primary">
+                            Delete
+                        </Button>
+                        <Button size="small" color="primary">
+                            Buy
+                        </Button>
+                        <Button size="small" color="primary">
+                            Trade
+                        </Button>
+                    </CardActions>
+                </Card>
+            </Grid>
+
         </div>
     )
 }
