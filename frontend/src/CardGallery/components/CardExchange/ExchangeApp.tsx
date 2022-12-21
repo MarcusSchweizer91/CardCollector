@@ -30,7 +30,7 @@ export default function ExchangeApp(){
 
     const addExchangeCard = (newCard: CardToExchange) =>{
 
-        axios.post("/api/exchange", newCard).then().catch(e=>console.error(e))
+        axios.post("/api/exchange", newCard).then(getExchangeCards).catch(e=>console.error(e))
 
     }
 
