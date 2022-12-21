@@ -1,6 +1,7 @@
 import {CardToExchange} from "../../models/CardToExchange";
 import {ChangeEvent, FormEvent, useState} from "react";
-import {Button} from "@mui/material";
+import {Button, Card, TextField} from "@mui/material";
+import "../css/ExchangeForm.css";
 
 type ExchangeFormProps = {
 
@@ -41,32 +42,85 @@ export default function ExchangeForm(props: ExchangeFormProps) {
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <span>Name:</span>
-                    <input type={"text"} onChange={handleChange} name={"name"} value={exchangeCard.name}/>
-                </div>
-                <div>
-                    <span>Description:</span>
-                    <input type={"text"} onChange={handleChange} name={"description"} value={exchangeCard.description}/>
-                </div>
-                <div>
-                    <span>Search or Offer:</span>
-                    <input type={"text"} onChange={handleChange} name={"type"} value={exchangeCard.type}/>
-                </div>
-                <div>
-                    <span>Price:</span>
-                    <input type={"text"} onChange={handleChange} name={"price"} value={exchangeCard.price} placeholder={"EUR"}/>
-                </div>
-                <div>
-                    <span>Alternative:</span>
-                    <input type={"text"} onChange={handleChange} name={"alternative"} value={exchangeCard.alternative}/>
-                </div>
-                <div>
-                    <Button type={"submit"}>Add</Button>
-                </div>
+            <Card variant={"outlined"} sx={{my:'2rem', mx:'5rem'}}>
+                <form onSubmit={handleSubmit}>
+                    <div className={"input-field"}>
+                        <TextField
+                            type={"text"}
+                            value={exchangeCard.name}
+                            onChange={handleChange}
+                            name={"name"}
+                            id="outlined-required"
+                            label="Name"
+                            size="small"
+                            fullWidth
 
-            </form>
+
+                        />
+                    </div>
+                    <div className={"input-field"}>
+                        <TextField
+                            type={"text"}
+                            value={exchangeCard.description}
+                            onChange={handleChange}
+                            name={"description"}
+                            id="outlined-required"
+                            fullWidth
+                            label="Description"
+                            size="small"
+
+
+                        />
+                    </div>
+                    <div className={"input-field"}>
+                        <TextField
+                            type={"text"}
+                            value={exchangeCard.type}
+                            onChange={handleChange}
+                            name={"type"}
+                            id="outlined-required"
+                            label="Search or Offer"
+                            size="small"
+                            fullWidth
+
+
+
+                        />
+                    </div>
+                    <div className={"input-field"}>
+                        <TextField
+                            type={"text"}
+                            value={exchangeCard.price}
+                            onChange={handleChange}
+                            name={"price"}
+                            id="outlined-required"
+                            label="Price in EUR"
+                            size="small"
+                            fullWidth
+
+
+                        />
+                    </div>
+                    <div className={"input-field"}>
+                        <TextField
+                            type={"text"}
+                            value={exchangeCard.alternative}
+                            onChange={handleChange}
+                            name={"alternative"}
+                            id="outlined-required"
+                            label="Alternative Trade"
+                            size="small"
+                            fullWidth
+
+
+                        />
+                    </div>
+                    <div>
+                        <Button sx={{mb: '1rem'}} variant={"outlined"} type={"submit"}>Add</Button>
+                    </div>
+
+                </form>
+            </Card>
         </div>
     )
 
