@@ -34,11 +34,21 @@ export default function ExchangeApp(){
 
     }
 
+
+    function deleteEntries(id?: string) {
+        axios.delete("/api/exchange/"+id)
+            .then(()=>{
+                setExchangeCards(prevState => {
+                    return prevState.filter((exchangeCard)=>exchangeCard.id !==id)
+                })
+            })
+    }
+
     return(
         <div>
             <ExchangeForm addEntry={addExchangeCard}/>
             <SearchBar handleSearchText={handleSearchTextOnChange}/>
-            <ExchangeGallery entries={filteredExchangeCards}/>
+            <ExchangeGallery entries={filteredExchangeCards} deleteEntry={deleteEntries}/>
 
         </div>
     )

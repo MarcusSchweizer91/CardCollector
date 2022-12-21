@@ -22,8 +22,8 @@ function onClickDelete (){
             <p>{props.exchangeCard.price}</p>
             <p>{props.exchangeCard.alternative}</p>
 
-            <Button onClick={onClickDelete}>Edit</Button>
-            <Button>Delete</Button>
+            <Button onClick={onClickDelete}>Delete</Button>
+            <Button>Edit</Button>
         </div>
     )
 }
