@@ -1,13 +1,18 @@
 import {CardToExchange} from "../../models/CardToExchange";
+import {Button} from "@mui/material";
 
 type ExchangeCardProps ={
     exchangeCard: CardToExchange
+    deleteEntry:(id?:string)=>void
 }
 
 
 export default function ExchangeCard(props: ExchangeCardProps){
 
+function onClickDelete (){
+    props.deleteEntry(props.exchangeCard.id)
 
+}
 
     return(
         <div>
@@ -17,6 +22,8 @@ export default function ExchangeCard(props: ExchangeCardProps){
             <p>{props.exchangeCard.price}</p>
             <p>{props.exchangeCard.alternative}</p>
 
+            <Button onClick={onClickDelete}>Edit</Button>
+            <Button>Delete</Button>
         </div>
     )
 }
