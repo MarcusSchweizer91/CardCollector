@@ -6,6 +6,7 @@ import com.example.backend.repo.ExchangeRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ExchangeService {
@@ -14,16 +15,15 @@ public class ExchangeService {
 
     private final IDService idService;
 
-    public List<ExchangeCard> getAllEntries(){
-        return exchangeRepo.findAll();
-    }
-
     public ExchangeService(ExchangeRepo exchangeRepo, IDService idService) {
         this.exchangeRepo = exchangeRepo;
         this.idService = idService;
     }
 
 
+    public List<ExchangeCard> getAllEntries(){
+        return exchangeRepo.findAll();
+    }
 
     public ExchangeCard saveEntry(ExchangeCardDTO exchangeCard){
 
@@ -36,5 +36,30 @@ public class ExchangeService {
                 exchangeCard.alternative()
         );
         return exchangeRepo.save(newCartToExchange);
+    }
+
+
+    public ExchangeCard getEntryByID (String id){
+        Optional<ExchangeCard> optionalEntry = exchangeRepo.findById(id);
+        if(optionalEntry.isPresent()){
+            return optionalEntry.get();
+        }
+        throw new IllegalArgumentException("Entry not found...");
+    }
+
+    public void deleteByID (String id){
+        exchangeRepo.deleteById(id);
+    }
+
+    public ExchangeCard updateEntry (String id, ExchangeCardDTO entryToUpdate){
+        ExchangeCard toEdit = new ExchangeCard(
+                id,
+                entryToUpdate.name(),
+                entryToUpdate.description(),
+                entryToUpdate.type(),
+                entryToUpdate.price(),
+                entryToUpdate.alternative()
+        );
+        return exchangeRepo.save(toEdit);
     }
 }
