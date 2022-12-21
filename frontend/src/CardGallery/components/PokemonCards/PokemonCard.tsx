@@ -11,9 +11,9 @@ type PokemonCardProps = {
 export default function PokemonCard(props: PokemonCardProps) {
 
 
-        const navigate = useNavigate()
+    const navigate = useNavigate()
 
-    function handleDetailsClick(){
+    function handleDetailsClick() {
         navigate("/details/" + props.card.id)
     }
 
@@ -34,13 +34,13 @@ export default function PokemonCard(props: PokemonCardProps) {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Button href="/users" variant={"contained"} size="small" color="primary">
+                    <Button href="/users" variant={"outlined"} size="small" color="primary">
                         Favorites
                     </Button>
-                    <Button href="/exchange" variant={"contained"} size="small" color="primary">
+                    <Button href="/exchange" variant={"outlined"} size="small" color="primary">
                         Buy
                     </Button>
-                    <Button href="/exchange" variant={"contained"} size="small" color="primary">
+                    <Button href="/exchange" variant={"outlined"} size="small" color="primary">
                         Trade
                     </Button>
                 </CardActions>
