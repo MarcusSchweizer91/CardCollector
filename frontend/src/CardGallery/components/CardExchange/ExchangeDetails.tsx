@@ -5,37 +5,33 @@ import axios from "axios";
 import {CardToExchange} from "../../models/CardToExchange";
 
 
-export default function ExchangeDetails(){
+export default function ExchangeDetails() {
 
     const exchangeParams = useParams()
     const [exchangeEntry, setExchangeEntry] = useState<CardToExchange>()
 
 
+    const id: string | undefined = exchangeParams.id
 
-    const id: string | undefined  = exchangeParams.id
-
-    useEffect(()=>{
-        if(id){
+    useEffect(() => {
+        if (id) {
             getEntryByID(id)
         }
-    },[id])
+    }, [id])
 
-    function getEntryByID(id:string){
-        axios.get("/api/exchange/"+id)
+    function getEntryByID(id: string) {
+        axios.get("/api/exchange/" + id)
             .then(response => response.data)
-            .then(data=>{
+            .then(data => {
                 setExchangeEntry(data)
             })
             .catch(console.error)
     }
 
 
-
-
-
-    return(
+    return (
         <div>
-            {! exchangeEntry && <p>loading...</p>}
+            {!exchangeEntry && <p>loading...</p>}
             {exchangeEntry &&
 
                 <div>
@@ -45,7 +41,6 @@ export default function ExchangeDetails(){
                     <p>{exchangeEntry.price}</p>
                     <p>{exchangeEntry.alternative}</p>
                 </div>
-
 
 
             }
