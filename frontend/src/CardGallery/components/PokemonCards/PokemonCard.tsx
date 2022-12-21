@@ -34,13 +34,13 @@ export default function PokemonCard(props: PokemonCardProps) {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Button size="small" color="primary">
+                    <Button href="/users" variant={"contained"} size="small" color="primary">
                         Favorites
                     </Button>
-                    <Button size="small" color="primary">
+                    <Button href="/exchange" variant={"contained"} size="small" color="primary">
                         Buy
                     </Button>
-                    <Button size="small" color="primary">
+                    <Button href="/exchange" variant={"contained"} size="small" color="primary">
                         Trade
                     </Button>
                 </CardActions>
