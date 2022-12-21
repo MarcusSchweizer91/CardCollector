@@ -47,13 +47,13 @@ export default function ExchangeCard(props: ExchangeCardProps) {
                         </CardContent>
                     </CardActionArea>
                     <CardActions>
-                        <Button onClick={onClickDelete} size="small" color="primary">
+                        <Button variant={"outlined"} onClick={onClickDelete} size="small" color="primary">
                             Delete
                         </Button>
-                        <Button size="small" color="primary">
+                        <Button variant={"outlined"} size="small" color="primary">
                             Buy
                         </Button>
-                        <Button size="small" color="primary">
+                        <Button variant={"outlined"} size="small" color="primary">
                             Trade
                         </Button>
                     </CardActions>
