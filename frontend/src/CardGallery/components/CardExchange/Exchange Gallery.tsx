@@ -1,5 +1,6 @@
 import {CardToExchange} from "../../models/CardToExchange";
 import ExchangeCard from "./ExchangeCard";
+import {Container} from "@mui/material";
 
 type ExchangeGalleryProps ={
     entries: CardToExchange[]
@@ -14,7 +15,10 @@ export default function ExchangeGallery(props: ExchangeGalleryProps){
 
     return(
         <div>
-            {exchangeComponents}
+            <Container>
+                {exchangeComponents}
+            </Container>
+
         </div>
 
     )
