@@ -29,4 +29,19 @@ public class ExchangeController {
         return exchangeService.saveEntry(entry);
     }
 
+    @GetMapping (path = "/{id}")
+    public ExchangeCard getByID (@PathVariable String id){
+        return exchangeService.getEntryByID(id);
+    }
+
+    @PutMapping (path = "/{id}")
+    public ExchangeCard updateEntry (@PathVariable String id, @RequestBody ExchangeCardDTO entryToUpdate){
+        return exchangeService.updateEntry(id, entryToUpdate);
+    }
+
+    @DeleteMapping (path = "/{id}")
+    public void deleteEntry (@PathVariable String id){
+        exchangeService.deleteByID(id);
+    }
+
 }
