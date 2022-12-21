@@ -5,6 +5,7 @@ import NavBar from "./CardGallery/components/NavBar";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import ExchangeApp from "./CardGallery/components/CardExchange/ExchangeApp";
 import PokemonDetails from "./CardGallery/components/PokemonCards/PokemonDetails";
+import ExchangeDetails from "./CardGallery/components/CardExchange/ExchangeDetails";
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
                 <Route path={"/exchange"} element={<ExchangeApp/>}></Route>
                 <Route path={"/user"} element={<PokemonApp/>}></Route>
                 <Route path={"/details/:id"} element={<PokemonDetails/>}></Route>
+                <Route path={"/exchange/:id"} element={<ExchangeDetails/>}></Route>
             </Routes>
         </BrowserRouter>
     </div>
