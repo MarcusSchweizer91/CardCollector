@@ -1,5 +1,6 @@
 import {CardToExchange} from "../../models/CardToExchange";
 import {ChangeEvent, FormEvent, useState} from "react";
+import {Button} from "@mui/material";
 
 type ExchangeFormProps = {
 
@@ -62,7 +63,7 @@ export default function ExchangeForm(props: ExchangeFormProps) {
                     <input type={"text"} onChange={handleChange} name={"alternative"} value={exchangeCard.alternative}/>
                 </div>
                 <div>
-                    <button type={"submit"}>Add</button>
+                    <Button type={"submit"}>Add</Button>
                 </div>
 
             </form>
