@@ -5,46 +5,47 @@ import {useEffect, useState} from "react";
 import ExchangeForm from "./ExchangeForm";
 import SearchBar from "../SearchBar";
 
-export default function ExchangeApp(){
+export default function ExchangeApp() {
 
-    const[exchangeCards, setExchangeCards] = useState<CardToExchange[]>([])
-    const[searchText, setSearchText] = useState<string>("")
+    const [exchangeCards, setExchangeCards] = useState<CardToExchange[]>([])
+    const [searchText, setSearchText] = useState<string>("")
 
 
-    function handleSearchTextOnChange(searchText:string){
+    function handleSearchTextOnChange(searchText: string) {
         setSearchText(searchText)
     }
+
     const filteredExchangeCards = exchangeCards.filter((exchangeCard) =>
-    exchangeCard.name.toLowerCase().includes(searchText.toLowerCase()))
+        exchangeCard.name.toLowerCase().includes(searchText.toLowerCase()))
 
-    useEffect(()=>{
+    useEffect(() => {
         getExchangeCards()
-    },[])
+    }, [])
 
-    function getExchangeCards(){
-        axios.get("/api/exchange").then((response)=>{
+    function getExchangeCards() {
+        axios.get("/api/exchange").then((response) => {
             setExchangeCards(response.data)
         })
-            .catch(e=>console.error(e))
+            .catch(e => console.error(e))
     }
 
-    const addExchangeCard = (newCard: CardToExchange) =>{
+    const addExchangeCard = (newCard: CardToExchange) => {
 
-        axios.post("/api/exchange", newCard).then(getExchangeCards).catch(e=>console.error(e))
+        axios.post("/api/exchange", newCard).then(getExchangeCards).catch(e => console.error(e))
 
     }
 
 
     function deleteEntries(id?: string) {
-        axios.delete("/api/exchange/"+id)
-            .then(()=>{
+        axios.delete("/api/exchange/" + id)
+            .then(() => {
                 setExchangeCards(prevState => {
-                    return prevState.filter((exchangeCard)=>exchangeCard.id !==id)
+                    return prevState.filter((exchangeCard) => exchangeCard.id !== id)
                 })
             })
     }
 
-    return(
+    return (
         <div>
             <ExchangeForm addEntry={addExchangeCard}/>
             <SearchBar handleSearchText={handleSearchTextOnChange}/>
