@@ -45,11 +45,16 @@ export default function ExchangeApp() {
             })
     }
 
+    function editEntry(newEdit: CardToExchange){
+        axios.put("/api/exchange/" + newEdit.id, newEdit)
+            .then(getExchangeCards)
+
+    }
     return (
         <div>
             <ExchangeForm addEntry={addExchangeCard}/>
             <SearchBar handleSearchText={handleSearchTextOnChange}/>
-            <ExchangeGallery entries={filteredExchangeCards} deleteEntry={deleteEntries}/>
+            <ExchangeGallery editEntry={editEntry}  entries={filteredExchangeCards} deleteEntry={deleteEntries}/>
 
         </div>
     )
