@@ -54,8 +54,6 @@ export default function ExchangeForm(props: ExchangeFormProps) {
                             label="Name"
                             size="small"
                             fullWidth
-
-
                         />
                     </div>
                     <div className={"input-field"}>
@@ -64,12 +62,12 @@ export default function ExchangeForm(props: ExchangeFormProps) {
                             value={exchangeCard.description}
                             onChange={handleChange}
                             name={"description"}
-                            id="outlined-required"
+                            id="outlined-multiline-flexible"
+                            multiline
+                            maxRows={5}
                             fullWidth
                             label="Description"
                             size="small"
-
-
                         />
                     </div>
                     <div className={"input-field"}>
@@ -82,10 +80,9 @@ export default function ExchangeForm(props: ExchangeFormProps) {
                             label="Search or Offer"
                             size="small"
                             fullWidth
-
-
-
                         />
+
+
                     </div>
                     <div className={"input-field"}>
                         <TextField
