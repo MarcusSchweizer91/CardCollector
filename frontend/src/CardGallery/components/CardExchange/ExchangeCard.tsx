@@ -58,7 +58,7 @@ export default function ExchangeCard(props: ExchangeCardProps) {
 
 
                     <CardContent>
-                        <Typography className={showButton ? "disappear" : "show"} gutterBottom variant="h5"
+                        <Typography gutterBottom variant="h5"
                                     component="div">
                             {props.exchangeCard.name}
                         </Typography>
@@ -82,6 +82,7 @@ export default function ExchangeCard(props: ExchangeCardProps) {
                                onChange={(event: ChangeEvent<HTMLInputElement>) => {
                                    setType(event.target.value)
                                }} value={type}/>
+
                         <Typography gutterBottom variant="body1" component="div">
                             {props.exchangeCard.price}
                         </Typography>
@@ -89,13 +90,14 @@ export default function ExchangeCard(props: ExchangeCardProps) {
                                onChange={(event: ChangeEvent<HTMLInputElement>) => {
                                    setPrice(event.target.value)
                                }} value={price}/>
+
                         <Typography gutterBottom variant="body1" component="div">
                             {props.exchangeCard.alternative}
-                            <input className={showButton ? "show" : "disappear"} type={"text"}
-                                   onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                                       setAlternative(event.target.value)
-                                   }} value={alternative}/>
                         </Typography>
+                        <input className={showButton ? "show" : "disappear"} type={"text"}
+                               onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                   setAlternative(event.target.value)
+                               }} value={alternative}/>
                     </CardContent>
 
 
