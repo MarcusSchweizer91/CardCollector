@@ -11,8 +11,12 @@ import {AccountCircle} from "@mui/icons-material";
 import logo from "../img/Logo2.png"
 
 type Anchor = 'left';
+type NavBarProps ={
+    logout:() => Promise<string>
+}
 
-export default function NavBar() {
+
+export default function NavBar(props: NavBarProps) {
 
     const [menu, setMenu] = React.useState<null | HTMLElement>(null)
     const [userLogin, setUserLogin] = React.useState<null | HTMLElement>(null)
@@ -68,6 +72,11 @@ export default function NavBar() {
                     <ListItemButton>
                         <ListItemText><NavLink className={"dropDownNL"}
                                                to={"/exchange"}>CardExchange</NavLink></ListItemText>
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton>
+                        <ListItemText><NavLink className={"dropDownNL"} to={"/login"}>Login</NavLink></ListItemText>
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -147,8 +156,7 @@ export default function NavBar() {
                                                                          to={"/login"}>Login</NavLink></MenuItem>
                                 <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"}
                                                                          to={"/newUser"}>SingUp</NavLink></MenuItem>
-                                <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"}
-                                                                         to={"/user"}>MyAccount</NavLink></MenuItem>
+                                <MenuItem onClick={props.logout}>Logout</MenuItem>
                             </Menu>
                         </div>
                     </Grid>
