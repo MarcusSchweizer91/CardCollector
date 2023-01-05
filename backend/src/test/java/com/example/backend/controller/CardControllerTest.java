@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 
@@ -50,7 +51,7 @@ class CardControllerTest {
         Card card = new Card("1", "Pikachu", "120", Collections.emptyList(), image);
         Card result = cardRepo.save(card);
 
-        mockMvc.perform(get("/api/cards/details/" + result.id()))
+        mockMvc.perform(get("/api/cards/details/" + result.id()).with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
