@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,7 +31,7 @@ class ExchangeControllerTest {
     @Autowired
     private ExchangeRepo exchangeRepo;
 
-
+    @WithMockUser("spring")
     @Test
     void getAllEntries_whenListEmpty_thenReturn() throws Exception {
 
@@ -39,12 +41,12 @@ class ExchangeControllerTest {
 
 
     }
-
+    @WithMockUser("spring")
     @Test
     @DirtiesContext
     void addEntry() throws Exception {
 
-        MvcResult result = mockMvc.perform(post("/api/exchange")
+        MvcResult result = mockMvc.perform(post("/api/exchange").with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(
                                 """
@@ -64,7 +66,7 @@ class ExchangeControllerTest {
         ExchangeCard cardToExchange = objectMapper.readValue(content, ExchangeCard.class);
         assertNotNull(cardToExchange.id());
     }
-
+    @WithMockUser("spring")
     @Test
     @DirtiesContext
     void getEntryByID() throws Exception {
@@ -79,7 +81,7 @@ class ExchangeControllerTest {
 
         );
         ExchangeCard result = exchangeRepo.save(cardToExchange);
-        mockMvc.perform(get("/api/exchange/" + result.id()))
+        mockMvc.perform(get("/api/exchange/" + result.id()).with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -92,7 +94,7 @@ class ExchangeControllerTest {
                         }
                         """.replace("<ID>", result.id())));
     }
-
+    @WithMockUser("spring")
     @Test
     @DirtiesContext
     void updateEntry() throws Exception {
@@ -107,7 +109,7 @@ class ExchangeControllerTest {
         );
         exchangeRepo.save(cardToExchange);
 
-        mockMvc.perform(put("/api/exchange/" + cardToExchange.id())
+        mockMvc.perform(put("/api/exchange/" + cardToExchange.id()).with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(
                                 """
@@ -136,6 +138,7 @@ class ExchangeControllerTest {
                 ));
     }
 
+    @WithMockUser("spring")
     @Test
     @DirtiesContext
     void deleteEntry() throws Exception {
@@ -150,7 +153,7 @@ class ExchangeControllerTest {
         );
         exchangeRepo.save(cardToExchange);
 
-        mockMvc.perform(delete("/api/exchange/" + cardToExchange.id()))
+        mockMvc.perform(delete("/api/exchange/" + cardToExchange.id()).with(csrf()))
                 .andExpect(status().isOk());
     }
 
