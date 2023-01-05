@@ -17,6 +17,9 @@ export default function PokemonCard(props: PokemonCardProps) {
         navigate("/details/" + props.card.id)
     }
 
+    function handleFavoritesClick (){
+        navigate("/users")
+    }
     return (
 
         <Grid m={6}>
@@ -34,7 +37,7 @@ export default function PokemonCard(props: PokemonCardProps) {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Button href="/users" variant={"outlined"} size="small" color="primary">
+                    <Button onClick={handleFavoritesClick} variant={"outlined"} size="small" color="primary">
                         Favorites
                     </Button>
                     <Button href="/exchange" variant={"outlined"} size="small" color="primary">
