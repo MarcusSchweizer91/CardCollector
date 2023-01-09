@@ -1,9 +1,11 @@
 package com.example.backend.security;
 
+import com.example.backend.service.IDService;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +16,9 @@ class UserServiceTest {
 
     MongoUserRepo mongoUserRepo = mock(MongoUserRepo.class);
 
-    UserService userService =new UserService(mongoUserRepo);
+    IDService idService = mock(IDService.class);
+
+    UserService userService =new UserService(mongoUserRepo, idService);
 
 
 
@@ -37,7 +41,7 @@ class UserServiceTest {
     void loadUserByUsernameExpectUsername(){
 
         // GIVEN
-        MongoUser expected = new MongoUser("123", "Frank", "ABC");
+        MongoUser expected = new MongoUser("123", "Frank", "ABC", "abc", Collections.emptyList());
         String username = "Frank";
 
         // WHEN
