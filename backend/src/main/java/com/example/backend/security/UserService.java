@@ -1,6 +1,7 @@
 package com.example.backend.security;
 
 
+import com.example.backend.service.IDService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,9 +15,21 @@ public class UserService implements UserDetailsService {
 
     private final MongoUserRepo mongoUserRepo;
 
-    public UserService(MongoUserRepo mongoUserRepo) {
+    private final IDService idService;
+
+    public UserService(MongoUserRepo mongoUserRepo, IDService idService) {
         this.mongoUserRepo = mongoUserRepo;
+        this.idService = idService;
     }
+
+    public MongoUser addUser (MongoUserDTO user){
+        String id = idService.generateID();
+
+        MongoUser newUser = new MongoUser(id, user.username(), user.password(), user.email(), user.favorites());
+        return mongoUserRepo.save(newUser);
+    }
+
+
 
 
     @Override
