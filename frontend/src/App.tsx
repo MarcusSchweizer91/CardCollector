@@ -9,10 +9,11 @@ import ExchangeDetails from "./CardGallery/components/CardExchange/ExchangeDetai
 import LoginPage from "./CardGallery/components/LoginPage";
 import useUser from "./CardGallery/components/hooks/useUser";
 import ProtectedRoutes from "./CardGallery/components/ProtectedRoutes";
+import RegisterForm from "./CardGallery/RegisterForm";
 
 function App() {
 
-    const {username, login, logout} = useUser();
+    const {username, login, logout, register} = useUser();
 
 
   return (
@@ -23,6 +24,7 @@ function App() {
             <Routes>
                 <Route path={"/"} element={<PokemonApp/>}></Route>
                 <Route path={"/login"} element={<LoginPage login={login}/>}></Route>
+                <Route path={"/register"} element={<RegisterForm register={register}/>}></Route>
 
                 <Route element={
                     <ProtectedRoutes username={username} />
