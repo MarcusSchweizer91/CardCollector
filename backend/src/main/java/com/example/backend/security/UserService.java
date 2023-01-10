@@ -29,7 +29,15 @@ public class UserService implements UserDetailsService {
         String id = idService.generateID();
 
         MongoUser newUser = new MongoUser(id, user.username(), argon2EncoderService.encode(user.password()), user.email(), user.favorites());
-        return mongoUserRepo.save(newUser);
+        mongoUserRepo.save(newUser);
+
+        return new MongoUser(
+                newUser.id(),
+                newUser.username(),
+                "***",
+                newUser.email(),
+                newUser.favorites()
+        );
     }
 
 
