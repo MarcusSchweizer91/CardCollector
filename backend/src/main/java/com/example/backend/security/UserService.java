@@ -17,15 +17,18 @@ public class UserService implements UserDetailsService {
 
     private final IDService idService;
 
-    public UserService(MongoUserRepo mongoUserRepo, IDService idService) {
+    private final Argon2EncoderService argon2EncoderService;
+
+    public UserService(MongoUserRepo mongoUserRepo, IDService idService, Argon2EncoderService argon2EncoderService) {
         this.mongoUserRepo = mongoUserRepo;
         this.idService = idService;
+        this.argon2EncoderService = argon2EncoderService;
     }
 
     public MongoUser addUser (MongoUserDTO user){
         String id = idService.generateID();
 
-        MongoUser newUser = new MongoUser(id, user.username(), user.password(), user.email(), user.favorites());
+        MongoUser newUser = new MongoUser(id, user.username(), argon2EncoderService.encode(user.password()), user.email(), user.favorites());
         return mongoUserRepo.save(newUser);
     }
 
