@@ -66,12 +66,12 @@ class UserServiceTest {
 
         // When
         when(idService.generateID()).thenReturn(id);
-        when(argon2EncoderService.encode("123")).thenReturn("encoded_password");
+        when(argon2EncoderService.encode("123")).thenReturn("***");
 
         MongoUser expectedUser = new MongoUser(
                 id,
                 "Hans",
-                "encoded_password",
+                "***",
                 "test",
                 List.of("a","b"));
 
