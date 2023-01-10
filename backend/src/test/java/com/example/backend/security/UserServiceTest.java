@@ -18,7 +18,9 @@ class UserServiceTest {
 
     IDService idService = mock(IDService.class);
 
-    UserService userService =new UserService(mongoUserRepo, idService);
+    Argon2EncoderService argon2EncoderService = mock(Argon2EncoderService.class);
+
+    UserService userService =new UserService(mongoUserRepo, idService, argon2EncoderService);
 
 
 
