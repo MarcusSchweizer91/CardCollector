@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .antMatchers("/api/cards").permitAll()
                 .antMatchers("/api/users/me").permitAll()
                 .antMatchers("/api/users/login").permitAll()
+                .antMatchers("/api/users/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .build();
