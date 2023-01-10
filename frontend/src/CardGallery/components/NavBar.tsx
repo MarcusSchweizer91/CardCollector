@@ -84,6 +84,11 @@ export default function NavBar(props: NavBarProps) {
                         <ListItemText><NavLink className={"dropDownNL"} to={"/user"}>MyAccount</NavLink></ListItemText>
                     </ListItemButton>
                 </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton>
+                        <ListItemText><NavLink className={"dropDownNL"} to={"/register"}>SignUp</NavLink></ListItemText>
+                    </ListItemButton>
+                </ListItem>
 
             </List>
 
