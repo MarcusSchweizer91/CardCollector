@@ -6,7 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.security.Principal;
+
 
 
 @RestController
@@ -20,11 +20,8 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public String helloMe(Principal principal){
-        if(principal !=null){
-            return principal.getName();
-        }
-        return "unknownUser";
+    public MongoUser helloMe(){
+        return userService.getUserByLogin();
     }
 
     @PostMapping("/login")
