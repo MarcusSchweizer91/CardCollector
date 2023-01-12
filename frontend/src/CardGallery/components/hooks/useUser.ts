@@ -1,15 +1,17 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
+import {UserData} from "../../models/UserData";
 
 export default function useUser() {
 
     const [username, setUsername] = useState<string>();
+    const [userInfo, setUserInfo] = useState<UserData>()
 
     useEffect(()=>{
         axios.get("api/users/me")
             .then(response => response.data)
-            .then(data => setUsername(data))
-    },[])
+            .then(data => setUserInfo(data))
+    },[username])
 
     function logout(){
         return axios.post("/api/users/logout")
@@ -43,5 +45,7 @@ export default function useUser() {
         }).catch(e => console.error(e));
     }
 
-    return{username, login, logout, register}
+
+
+    return{username, userInfo, login, logout, register}
 }
