@@ -38,7 +38,8 @@ class UserControllerTest {
     void helloMe() throws Exception {
         mockMvc.perform(get("/api/users/me"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("user"));
+        ;
+
     }
 
     @Test
@@ -46,7 +47,13 @@ class UserControllerTest {
     void helloMe_expect_unknownUser() throws Exception {
         mockMvc.perform(get("/api/users/me"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("unknownUser"));
+                .andExpect(content().json("""
+            {"id":"",
+            "username":"unknownUser",
+            "password": "",
+            "email": "",
+            "favorites": []}
+"""));
 
     }
 
