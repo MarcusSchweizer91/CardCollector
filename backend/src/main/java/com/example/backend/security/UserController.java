@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 
+
 @RestController
 @RequestMapping("api/users")
 public class UserController {
@@ -41,6 +42,11 @@ public class UserController {
     @PostMapping ("/register")
     public MongoUser addUser (@RequestBody MongoUserDTO mongoUserDTO){
         return userService.addUser(mongoUserDTO);
+    }
+
+    @GetMapping ("/{id}")
+    public MongoUser getByID (@PathVariable String id){
+        return userService.getUserByID(id);
     }
 
 
