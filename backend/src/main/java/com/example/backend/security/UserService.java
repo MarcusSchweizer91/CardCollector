@@ -2,12 +2,14 @@ package com.example.backend.security;
 
 
 import com.example.backend.service.IDService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +49,14 @@ public class UserService implements UserDetailsService {
             return userOptional.get();
         }
         throw new IllegalArgumentException("User not found...");
+    }
+
+    public MongoUser getUserByLogin (){
+        Optional<MongoUser> userBySecurity = mongoUserRepo.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        return userBySecurity.flatMap(user -> userBySecurity)
+                .orElse(new MongoUser("","unknownUser","","", Collections.emptyList()));
+
     }
 
 
