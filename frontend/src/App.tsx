@@ -6,14 +6,17 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import ExchangeApp from "./CardGallery/components/CardExchange/ExchangeApp";
 import PokemonDetails from "./CardGallery/components/PokemonCards/PokemonDetails";
 import ExchangeDetails from "./CardGallery/components/CardExchange/ExchangeDetails";
-import LoginPage from "./CardGallery/components/LoginPage";
+import LoginPage from "./CardGallery/components/user/LoginPage";
 import useUser from "./CardGallery/components/hooks/useUser";
 import ProtectedRoutes from "./CardGallery/components/ProtectedRoutes";
-import RegisterForm from "./CardGallery/RegisterForm";
+import RegisterForm from "./CardGallery/components/user/RegisterForm";
+import UserDetails from "./CardGallery/components/user/UserDetails";
+
 
 function App() {
 
-    const {username, login, logout, register} = useUser();
+    const {username,userInfo, login, logout, register} = useUser();
+
 
 
   return (
@@ -27,12 +30,12 @@ function App() {
                 <Route path={"/register"} element={<RegisterForm register={register}/>}></Route>
 
                 <Route element={
-                    <ProtectedRoutes username={username} />
+                    <ProtectedRoutes userInfo={userInfo} />
                 }>
                     <Route path={"/exchange"} element={<ExchangeApp/>}></Route>
                     <Route path={"/details/:id"} element={<PokemonDetails/>}></Route>
                     <Route path={"/exchange/:id"} element={<ExchangeDetails/>}></Route>
-                    <Route path={"/users"} element={<PokemonApp/>}></Route>
+                    <Route path={"/user"} element={<UserDetails userInfo={userInfo}/>}></Route>
                 </Route>
             </Routes>
         </BrowserRouter>
