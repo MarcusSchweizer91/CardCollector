@@ -41,10 +41,7 @@ public class UserController {
         return userService.addUser(mongoUserDTO);
     }
 
-    @GetMapping ("/{id}")
-    public MongoUser getByID (@PathVariable String id){
-        return userService.getUserByID(id);
-    }
+
 
 
 
