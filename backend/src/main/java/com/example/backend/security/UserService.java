@@ -43,13 +43,7 @@ public class UserService implements UserDetailsService {
         );
     }
 
-    public MongoUser getUserByID(String id){
-        Optional<MongoUser> userOptional = mongoUserRepo.findById(id);
-        if(userOptional.isPresent()){
-            return userOptional.get();
-        }
-        throw new IllegalArgumentException("User not found...");
-    }
+
 
     public MongoUser getUserByLogin (){
         Optional<MongoUser> userBySecurity = mongoUserRepo.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
