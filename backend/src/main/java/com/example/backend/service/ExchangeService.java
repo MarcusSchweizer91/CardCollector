@@ -3,8 +3,14 @@ package com.example.backend.service;
 import com.example.backend.models.ExchangeCard;
 import com.example.backend.models.ExchangeCardDTO;
 import com.example.backend.repo.ExchangeRepo;
-import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,16 +31,20 @@ public class ExchangeService {
         return exchangeRepo.findAll();
     }
 
-    public ExchangeCard saveEntry(ExchangeCardDTO exchangeCard){
+    public ExchangeCard saveEntry(String exchangeCard, MultipartFile cardImage) throws IOException {
+
+        ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
+        ExchangeCardDTO exchangeCardDTO = objectMapper.readValue(exchangeCard, ExchangeCardDTO.class);
+
 
         ExchangeCard newCartToExchange = new ExchangeCard(
                 idService.generateID(),
-                exchangeCard.name(),
-                exchangeCard.description(),
-                exchangeCard.type(),
-                exchangeCard.price(),
-                exchangeCard.alternative()
-        );
+                exchangeCardDTO.name(),
+                exchangeCardDTO.description(),
+                exchangeCardDTO.type(),
+                exchangeCardDTO.price(),
+                exchangeCardDTO.alternative(),
+                Base64.getEncoder().encodeToString(cardImage.getBytes()));
         return exchangeRepo.save(newCartToExchange);
     }
 
@@ -51,15 +61,15 @@ public class ExchangeService {
         exchangeRepo.deleteById(id);
     }
 
-    public ExchangeCard updateEntry (String id, ExchangeCardDTO entryToUpdate){
+    public ExchangeCard updateEntry (String id, ExchangeCardDTO entryToUpdate) throws IOException {
         ExchangeCard toEdit = new ExchangeCard(
                 id,
                 entryToUpdate.name(),
                 entryToUpdate.description(),
                 entryToUpdate.type(),
                 entryToUpdate.price(),
-                entryToUpdate.alternative()
-        );
+                entryToUpdate.alternative(),
+                Base64.getEncoder().encodeToString(entryToUpdate.cardImage().getBytes()));
         return exchangeRepo.save(toEdit);
     }
 
