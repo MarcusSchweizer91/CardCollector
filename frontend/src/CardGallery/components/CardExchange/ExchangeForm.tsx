@@ -28,6 +28,15 @@ export default function ExchangeForm(props: ExchangeFormProps) {
         setExchangeCard(emptyFormPlaceholder)
     }
 
+    function handleImage(event:ChangeEvent<HTMLInputElement>){
+
+        const changeInput = event.target.name
+        setExchangeCard({
+            ...exchangeCard,[changeInput]:event.target.files
+        })
+
+    }
+
     function handleChange(event: ChangeEvent<HTMLInputElement>) {
 
         const changedInput = event.target.name
@@ -106,6 +115,17 @@ export default function ExchangeForm(props: ExchangeFormProps) {
                             name={"alternative"}
                             id="outlined-required"
                             label="Alternative Trade"
+                            size="small"
+                            fullWidth
+
+
+                        />
+                    </div>
+                    <div className={"input-field"}>
+                        <TextField
+                            type={"file"}
+                            onChange={handleImage}
+                            name={"image"}
                             size="small"
                             fullWidth
 
