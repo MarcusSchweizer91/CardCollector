@@ -8,7 +8,7 @@ type ProtectedRoutesProps={
 
 export default function ProtectedRoutes(props: ProtectedRoutesProps){
 
-    const isAuthenticated = props.userInfo?.username !== "unknownUser" && props.userInfo !== undefined
+    const isAuthenticated = props.userInfo?.username !== "unknownUser" 
 
     console.log(props.userInfo)
     return(
