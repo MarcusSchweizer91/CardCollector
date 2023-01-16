@@ -51,7 +51,7 @@ export default function ExchangeCard(props: ExchangeCardProps) {
     function handleDetailsClick() {
         navigate("/exchange/" + props.exchangeCard.id)
     }
-    console.log(props.exchangeCard)
+
     return (
         <div>
             <Grid m={6}>
