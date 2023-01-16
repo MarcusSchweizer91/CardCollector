@@ -1,5 +1,6 @@
 package com.example.backend.models;
 
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("exchangeOffers")
@@ -9,6 +10,7 @@ String name,
 String description,
 String type,
 String price,
-String alternative
+String alternative,
+String base64Image
 ) {
 }
