@@ -5,7 +5,9 @@ import com.example.backend.models.ExchangeCard;
 import com.example.backend.models.ExchangeCardDTO;
 import com.example.backend.service.ExchangeService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -25,8 +27,8 @@ public class ExchangeController {
     }
 
     @PostMapping
-    public ExchangeCard addEntry(@RequestBody ExchangeCardDTO entry) {
-        return exchangeService.saveEntry(entry);
+    public ExchangeCard addEntry(@RequestPart(value = "entry") String entry, @RequestPart(value = "file") MultipartFile cardImage) throws IOException {
+        return exchangeService.saveEntry(entry, cardImage);
     }
 
     @GetMapping(path = "/{id}")
@@ -35,7 +37,7 @@ public class ExchangeController {
     }
 
     @PutMapping(path = "/{id}")
-    public ExchangeCard updateEntry(@PathVariable String id, @RequestBody ExchangeCardDTO entryToUpdate) {
+    public ExchangeCard updateEntry(@PathVariable String id, @RequestBody ExchangeCardDTO entryToUpdate) throws IOException {
         return exchangeService.updateEntry(id, entryToUpdate);
     }
 
