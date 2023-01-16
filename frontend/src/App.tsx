@@ -15,7 +15,7 @@ import UserDetails from "./CardGallery/components/user/UserDetails";
 
 function App() {
 
-    const {username,userInfo, login, logout, register} = useUser();
+    const {userInfo, login, logout, register} = useUser();
 
 
 
@@ -23,7 +23,7 @@ function App() {
     <div className="App">
         <BrowserRouter>
             <NavBar logout={logout}/>
-            <h2>{username}</h2>
+            <h2>{userInfo?.username}</h2>
             <Routes>
                 <Route path={"/"} element={<PokemonApp/>}></Route>
                 <Route path={"/login"} element={<LoginPage login={login}/>}></Route>
