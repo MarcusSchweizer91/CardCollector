@@ -1,5 +1,5 @@
 import {CardToExchange} from "../../models/CardToExchange";
-import {Button, Card, CardActions, CardContent, Grid, Typography} from "@mui/material";
+import {Button, Card, CardActions, CardContent, CardMedia, Grid, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {ChangeEvent, useState} from "react";
 import "../css/ExchangeCard.css"
@@ -22,6 +22,7 @@ export default function ExchangeCard(props: ExchangeCardProps) {
     const [type, setType] = useState(props.exchangeCard.type)
     const [price, setPrice] = useState(props.exchangeCard.price)
     const [alternative, setAlternative] = useState(props.exchangeCard.alternative)
+
 
     function onClickEditButton() {
         setShowButton(true)
@@ -50,13 +51,13 @@ export default function ExchangeCard(props: ExchangeCardProps) {
     function handleDetailsClick() {
         navigate("/exchange/" + props.exchangeCard.id)
     }
-
+    console.log(props.exchangeCard)
     return (
         <div>
             <Grid m={6}>
-                <Card>
-
-
+                <Card>{props.exchangeCard.base64Image &&
+                    <CardMedia component={"img"} src={`data:image/png;base64,${props.exchangeCard.base64Image}`}/>
+                }
                     <CardContent>
                         <Typography gutterBottom variant="h5"
                                     component="div">
