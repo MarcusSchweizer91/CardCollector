@@ -3,7 +3,7 @@ package com.example.backend.service;
 
 
 import com.example.backend.models.ExchangeCard;
-import com.example.backend.models.ExchangeCardDTO;
+
 
 import com.example.backend.repo.ExchangeRepo;
 import org.junit.jupiter.api.Test;
@@ -111,17 +111,9 @@ class ExchangeServiceTest {
     @Test
     void updateEntry() throws IOException {
         // Given
+        String exchangeCardDTO = "{\"name\":\"Pikachu\",\"description\":\"Super Karte\",\"type\":\"Search\",\"price\":\"12\",\"alternative\":\"Trade for two Bisasam\"}";
         MultipartFile cardImage = mock(MultipartFile.class);
         when(cardImage.getBytes()).thenReturn("image bytes".getBytes());
-
-        ExchangeCardDTO cardToAdd = new ExchangeCardDTO(
-                "Pikachu",
-                "Super Karte",
-                "Search",
-                "12",
-                "Trade for two Bisasam",
-                cardImage
-        );
 
         ExchangeCard expectedCard = new ExchangeCard(
                 "1",
@@ -134,13 +126,17 @@ class ExchangeServiceTest {
         );
 
         // When
+        when(exchangeRepo.findById("1")).thenReturn(Optional.of(expectedCard));
         when(exchangeRepo.save(expectedCard)).thenReturn(expectedCard);
-        ExchangeCard actualCard = exchangeService.updateEntry("1",cardToAdd);
+
+        ExchangeCard actualCard = exchangeService.updateEntry("1", exchangeCardDTO, cardImage);
 
         // Then
         assertEquals(expectedCard, actualCard);
         verify(exchangeRepo).save(expectedCard);
     }
+
+
 
 
 
