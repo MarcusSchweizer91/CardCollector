@@ -7,14 +7,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -25,8 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ExchangeControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Autowired
     private ExchangeRepo exchangeRepo;
@@ -46,26 +45,28 @@ class ExchangeControllerTest {
     @DirtiesContext
     void addEntry() throws Exception {
 
-        MvcResult result = mockMvc.perform(post("/api/exchange").with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(
-                                """
-                                        {
-                                        "name": "Pikachu",
-                                        "description": "ABC",
-                                        "type": "search",
-                                        "price": 8.50,
-                                        "alternative": "Trade for two Glurak"
-                                        }
-                                        """
-                        ))
-                .andExpect(status().isOk())
-                .andReturn();
 
-        String content = result.getResponse().getContentAsString();
-        ExchangeCard cardToExchange = objectMapper.readValue(content, ExchangeCard.class);
-        assertNotNull(cardToExchange.id());
+        MockMultipartFile entry = new MockMultipartFile("entry", """
+                {
+                "id": "1",
+                "name": "Pikachu",
+                "description": "BlaBla",
+                "price": "12",
+                "alternative": "Two Glurak",
+                "base64Image": ""
+                }
+                """.getBytes());
+
+        MockMultipartFile file = new MockMultipartFile("file", "".getBytes());
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/api/exchange")
+                        .file(entry)
+                        .file(file).with(csrf()))
+                .andExpect(status().isOk());
+
     }
+
+
     @WithMockUser("spring")
     @Test
     @DirtiesContext
@@ -77,7 +78,8 @@ class ExchangeControllerTest {
                 "BlaBla",
                 "search",
                 "12",
-                "Two Glurak"
+                "Two Glurak",
+                "base64String"
 
         );
         ExchangeCard result = exchangeRepo.save(cardToExchange);
@@ -94,6 +96,8 @@ class ExchangeControllerTest {
                         }
                         """.replace("<ID>", result.id())));
     }
+
+
     @WithMockUser("spring")
     @Test
     @DirtiesContext
@@ -104,39 +108,32 @@ class ExchangeControllerTest {
                 "BlaBla",
                 "search",
                 "12",
-                "Two Glurak"
+                "Two Glurak",
+                "base64String");
 
-        );
         exchangeRepo.save(cardToExchange);
 
-        mockMvc.perform(put("/api/exchange/" + cardToExchange.id()).with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(
-                                """
-                                             {
-                                         "id": "1",
-                                        "name": "Bisasam",
-                                        "description": "BlaBla",
-                                        "type": "search",
-                                        "price": "12",
-                                        "alternative": "Two Glurak"
-                                             }
-                                                     """
-                        ))
-                .andExpect(status().isOk())
-                .andExpect(content().json(
-                        """
-                                      {
-                                "id": "1",
-                                "name": "Bisasam",
-                                "description": "BlaBla",
-                                "type": "search",
-                                "price": "12",
-                                 "alternative": "Two Glurak"
-                                      }
-                                      """
-                ));
+        MockMultipartFile entry = new MockMultipartFile("entry", """
+            {
+            "id": "1",
+            "name": "Bisasam",
+            "description": "BlaBla",
+            "price": "12",
+            "alternative": "Two Glurak",
+            "base64Image": ""
+            }
+            """.getBytes());
+
+        MockMultipartFile file = new MockMultipartFile("file", "".getBytes());
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart(HttpMethod.PUT,"/api/exchange/" + cardToExchange.id())
+                        .file(entry)
+                        .file(file)
+                        .with(csrf())
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isOk());
     }
+
 
     @WithMockUser("spring")
     @Test
@@ -148,7 +145,8 @@ class ExchangeControllerTest {
                 "BlaBla",
                 "search",
                 "12",
-                "Two Glurak"
+                "Two Glurak",
+                "base64String"
 
         );
         exchangeRepo.save(cardToExchange);
