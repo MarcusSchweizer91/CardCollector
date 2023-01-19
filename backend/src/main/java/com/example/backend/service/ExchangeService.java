@@ -61,15 +61,20 @@ public class ExchangeService {
         exchangeRepo.deleteById(id);
     }
 
-    public ExchangeCard updateEntry (String id, ExchangeCardDTO entryToUpdate) throws IOException {
+    public ExchangeCard updateEntry (String id, String exchangeCard, MultipartFile cardImage) throws IOException {
+
+        ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
+        ExchangeCardDTO exchangeCardDTO = objectMapper.readValue(exchangeCard, ExchangeCardDTO.class);
+
+
         ExchangeCard toEdit = new ExchangeCard(
                 id,
-                entryToUpdate.name(),
-                entryToUpdate.description(),
-                entryToUpdate.type(),
-                entryToUpdate.price(),
-                entryToUpdate.alternative(),
-                Base64.getEncoder().encodeToString(entryToUpdate.cardImage().getBytes()));
+                exchangeCardDTO.name(),
+                exchangeCardDTO.description(),
+                exchangeCardDTO.type(),
+                exchangeCardDTO.price(),
+                exchangeCardDTO.alternative(),
+                Base64.getEncoder().encodeToString(cardImage.getBytes()));
         return exchangeRepo.save(toEdit);
     }
 
