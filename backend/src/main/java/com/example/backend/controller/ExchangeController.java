@@ -2,7 +2,6 @@ package com.example.backend.controller;
 
 
 import com.example.backend.models.ExchangeCard;
-import com.example.backend.models.ExchangeCardDTO;
 import com.example.backend.service.ExchangeService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,8 +36,8 @@ public class ExchangeController {
     }
 
     @PutMapping(path = "/{id}")
-    public ExchangeCard updateEntry(@PathVariable String id, @RequestBody ExchangeCardDTO entryToUpdate) throws IOException {
-        return exchangeService.updateEntry(id, entryToUpdate);
+    public ExchangeCard updateEntry(@PathVariable String id, @RequestPart(value = "entry") String entryToUpdate, @RequestPart(value = "file") MultipartFile cardImage) throws IOException {
+        return exchangeService.updateEntry(id, entryToUpdate, cardImage);
     }
 
     @DeleteMapping(path = "/{id}")
