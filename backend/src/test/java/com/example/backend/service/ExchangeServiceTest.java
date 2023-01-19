@@ -7,7 +7,10 @@ import com.example.backend.models.ExchangeCardDTO;
 
 import com.example.backend.repo.ExchangeRepo;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -39,16 +42,12 @@ class ExchangeServiceTest {
 
 
     @Test
-    void saveEntry() {
+    void saveEntry() throws IOException {
 
         //Given
-        ExchangeCardDTO cardDTO = new ExchangeCardDTO(
-                "Pikachu",
-                "Super Karte",
-                "Search",
-                "12",
-                "Trade for two Bisasam"
-        );
+        String exchangeCardDTO = "{\"name\":\"Pikachu\",\"description\":\"Super Karte\",\"type\":\"Search\",\"price\":\"12\",\"alternative\":\"Trade for two Bisasam\"}";
+        MultipartFile cardImage = mock(MultipartFile.class);
+        when(cardImage.getBytes()).thenReturn("image bytes".getBytes());
 
 
         ExchangeCard expectedCard = new ExchangeCard(
@@ -57,14 +56,15 @@ class ExchangeServiceTest {
                 "Super Karte",
                 "Search",
                 "12",
-                "Trade for two Bisasam"
+                "Trade for two Bisasam",
+                Base64.getEncoder().encodeToString(cardImage.getBytes())
         );
 
         //When
         when(exchangeRepo.save(any())).thenReturn(expectedCard);
         when(idService.generateID()).thenReturn("1");
 
-        ExchangeCard actual = exchangeService.saveEntry(cardDTO);
+        ExchangeCard actual = exchangeService.saveEntry(exchangeCardDTO, cardImage);
 
         //Then
         assertEquals(actual, expectedCard);
@@ -76,7 +76,7 @@ class ExchangeServiceTest {
     void getEntryByID() {
 
         //Given
-        ExchangeCard exchangeCard = new ExchangeCard("1", "Pikachu", "BlaBla", "search", "12","Two Glurak");
+        ExchangeCard exchangeCard = new ExchangeCard("1", "Pikachu", "BlaBla", "search", "12","Two Glurak", "base64String");
         String id = "1";
 
         //When
@@ -98,40 +98,50 @@ class ExchangeServiceTest {
                 "BlaBla",
                 "search",
                 "12",
-                "Two Glurak"
+                "Two Glurak",
+                "base64String"
         );
 
         doNothing().when(exchangeRepo).deleteById(isA(String.class));
         exchangeRepo.deleteById(expectedCard.id());
         verify(exchangeRepo, times(1)).deleteById(expectedCard.id());
     }
+
+
     @Test
-    void updateEntry() {
+    void updateEntry() throws IOException {
+        // Given
+        MultipartFile cardImage = mock(MultipartFile.class);
+        when(cardImage.getBytes()).thenReturn("image bytes".getBytes());
 
         ExchangeCardDTO cardToAdd = new ExchangeCardDTO(
                 "Pikachu",
-                "BlaBla",
-                "search",
+                "Super Karte",
+                "Search",
                 "12",
-                "Two Glurak"
+                "Trade for two Bisasam",
+                cardImage
         );
 
         ExchangeCard expectedCard = new ExchangeCard(
                 "1",
                 "Pikachu",
-                "BlaBla",
-                "search",
+                "Super Karte",
+                "Search",
                 "12",
-                "Two Glurak"
+                "Trade for two Bisasam",
+                Base64.getEncoder().encodeToString(cardImage.getBytes())
         );
 
-        //When
+        // When
         when(exchangeRepo.save(expectedCard)).thenReturn(expectedCard);
         ExchangeCard actualCard = exchangeService.updateEntry("1",cardToAdd);
 
-        //Then
+        // Then
         assertEquals(expectedCard, actualCard);
         verify(exchangeRepo).save(expectedCard);
     }
+
+
 
 }
