@@ -4,6 +4,7 @@ import com.example.backend.exceptions.CardAlreadySavedException;
 import com.example.backend.models.FavoriteCard;
 import com.example.backend.models.MongoUser;
 import com.example.backend.models.MongoUserDTO;
+import com.example.backend.repo.CardRepo;
 import com.example.backend.service.IDService;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +23,9 @@ class UserServiceTest {
 
     Argon2EncoderService argon2EncoderService = mock(Argon2EncoderService.class);
 
-    UserService userService =new UserService(mongoUserRepo, idService, argon2EncoderService);
+    CardRepo cardRepo = mock(CardRepo.class);
+
+    UserService userService =new UserService(mongoUserRepo, cardRepo, idService, argon2EncoderService);
 
 
 
