@@ -4,7 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
+
+import java.util.Set;
 
 @Document("users")
 public record MongoUser (
@@ -15,6 +16,6 @@ public record MongoUser (
         String password,
         @Indexed(unique = true)
         String email,
-        List<FavoriteCard> favorites
+        Set<FavoriteCard> favorites
 ){
 }
