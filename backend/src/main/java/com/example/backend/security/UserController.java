@@ -2,6 +2,7 @@ package com.example.backend.security;
 
 
 
+import com.example.backend.models.Card;
 import com.example.backend.models.FavoriteCard;
 import com.example.backend.models.MongoUser;
 import com.example.backend.models.MongoUserDTO;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -52,6 +54,11 @@ public class UserController {
     @PutMapping("/favorites/{cardId}")
     public Set<FavoriteCard> addFavoriteCard (Principal principal, @PathVariable String cardId){
         return userService.addFavorites(principal.getName(), cardId);
+    }
+
+    @GetMapping("/favorites")
+    public List<Card> getFavoriteCards (Principal principal){
+        return userService.getFavoriteCards(principal.getName());
     }
 
 
