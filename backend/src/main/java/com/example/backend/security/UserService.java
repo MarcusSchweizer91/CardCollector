@@ -2,9 +2,11 @@ package com.example.backend.security;
 
 
 import com.example.backend.exceptions.CardAlreadySavedException;
+import com.example.backend.models.Card;
 import com.example.backend.models.FavoriteCard;
 import com.example.backend.models.MongoUser;
 import com.example.backend.models.MongoUserDTO;
+import com.example.backend.repo.CardRepo;
 import com.example.backend.service.IDService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -13,22 +15,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
 
     private final MongoUserRepo mongoUserRepo;
 
+    private final CardRepo cardRepo;
+
     private final IDService idService;
 
     private final Argon2EncoderService argon2EncoderService;
 
-    public UserService(MongoUserRepo mongoUserRepo, IDService idService, Argon2EncoderService argon2EncoderService) {
+    public UserService(MongoUserRepo mongoUserRepo, CardRepo cardRepo, IDService idService, Argon2EncoderService argon2EncoderService) {
         this.mongoUserRepo = mongoUserRepo;
+        this.cardRepo = cardRepo;
         this.idService = idService;
         this.argon2EncoderService = argon2EncoderService;
     }
@@ -60,6 +62,18 @@ public class UserService implements UserDetailsService {
 
         cardList.add(newFavCard);
         mongoUserRepo.save(user);
+        return cardList;
+    }
+
+    public List<Card> getFavoriteCards (String username){
+        Set<FavoriteCard> list = mongoUserRepo.findByUsername(username).orElseThrow().favorites();
+
+        List<Card> cardList = new ArrayList<>();
+
+        for (FavoriteCard favCard: list){
+            Card card = cardRepo.findById(favCard.id()).orElseThrow();
+            cardList.add(card);
+        }
         return cardList;
     }
 
