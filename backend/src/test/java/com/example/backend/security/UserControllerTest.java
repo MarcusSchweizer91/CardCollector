@@ -1,6 +1,7 @@
 package com.example.backend.security;
 
-import com.example.backend.models.MongoUserDTO;
+import com.example.backend.models.*;
+import com.example.backend.repo.CardRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 
 import java.util.Collections;
+import java.util.HashSet;
 
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -31,6 +32,12 @@ class UserControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    MongoUserRepo mongoUserRepo;
+
+    @Autowired
+    CardRepo cardRepo;
 
 
     @Test
@@ -49,12 +56,12 @@ class UserControllerTest {
         mockMvc.perform(get("/api/users/me"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
-            {"id":"",
-            "username":"unknownUser",
-            "password": "",
-            "email": "",
-            "favorites": []}
-"""));
+                                    {"id":"",
+                                    "username":"unknownUser",
+                                    "password": "",
+                                    "email": "",
+                                    "favorites": []}
+                        """));
 
     }
 
@@ -82,16 +89,40 @@ class UserControllerTest {
     @DirtiesContext
     void register() throws Exception {
 
-        MongoUserDTO mongoUserDTO = new MongoUserDTO("Ulf","123", "abc", Collections.emptySet());
+        MongoUserDTO mongoUserDTO = new MongoUserDTO("Ulf", "123", "abc", Collections.emptySet());
 
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(mongoUserDTO);
 
         mockMvc.perform(post("/api/users/register").with(csrf())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andExpect(status().isOk());
 
 
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "Marcus")
+    void addFavorites() throws Exception {
+        MongoUser user1 = new MongoUser("123", "Marcus", "password", "firstname",
+                new HashSet<>());
+        mongoUserRepo.save(user1);
+
+
+        cardRepo.save(new Card("321", "Pikachu", "123", Collections.emptyList(), new Image("url")));
+
+        mockMvc.perform(put("/api/users/favorites/321")
+                        .with(csrf()))
+
+                .andExpect(status().isOk())
+                .andExpect(content().json(
+                        """
+                                [{
+                                "id": "321"
+                                }]
+                                """
+                ));
     }
 }
