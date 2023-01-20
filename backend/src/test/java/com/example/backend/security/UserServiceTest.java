@@ -1,5 +1,6 @@
 package com.example.backend.security;
 
+import com.example.backend.exceptions.CardAlreadySavedException;
 import com.example.backend.models.FavoriteCard;
 import com.example.backend.models.MongoUser;
 import com.example.backend.models.MongoUserDTO;
@@ -104,6 +105,19 @@ class UserServiceTest {
 
         assertEquals(result, newList);
     }
+
+    @Test
+    void addFavorites_cardAlreadySaved_throwsCardAlreadySavedException() {
+        // Given
+        String username = "testuser";
+        String cardId = "123";
+        MongoUser user = new MongoUser("1", username, "password", "email@example.com", Set.of(new FavoriteCard(cardId)));
+        when(mongoUserRepo.findByUsername(username)).thenReturn(Optional.of(user));
+
+        // When & Then
+        assertThrows(CardAlreadySavedException.class, () -> userService.addFavorites(username, cardId));
+    }
+
 
 
 }
