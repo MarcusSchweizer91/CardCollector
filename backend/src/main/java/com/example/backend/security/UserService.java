@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -46,9 +47,9 @@ public class UserService implements UserDetailsService {
         );
     }
 
-    public List<FavoriteCard> addFavorites(String username, String cardId){
+    public Set<FavoriteCard> addFavorites(String username, String cardId){
         MongoUser user = mongoUserRepo.findByUsername(username).orElseThrow();
-        List<FavoriteCard> cardList = user.favorites();
+        Set<FavoriteCard> cardList = user.favorites();
         FavoriteCard newFavCard = new FavoriteCard(cardId);
 
         cardList.add(newFavCard);
@@ -61,7 +62,7 @@ public class UserService implements UserDetailsService {
         Optional<MongoUser> userBySecurity = mongoUserRepo.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
         return userBySecurity.flatMap(user -> userBySecurity)
-                .orElse(new MongoUser("","unknownUser","","", Collections.emptyList()));
+                .orElse(new MongoUser("","unknownUser","","", Collections.emptySet()));
 
     }
 
