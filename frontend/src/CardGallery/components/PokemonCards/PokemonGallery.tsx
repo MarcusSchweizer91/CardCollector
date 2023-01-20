@@ -4,12 +4,13 @@ import { Container, Grid} from "@mui/material";
 
 type PokemonGalleryProps = {
     cards: PokeCard[]
+    addCardToFavorites(id:string):void
 }
 
 export default function PokemonGallery(props: PokemonGalleryProps) {
 
     const cardComponents = props.cards.map(cardData => {
-        return <PokemonCard card={cardData} key={cardData.id}/>
+        return <PokemonCard addCardToFavorites={props.addCardToFavorites} card={cardData} key={cardData.id}/>
     })
 
     return (
