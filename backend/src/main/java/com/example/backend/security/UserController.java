@@ -2,11 +2,15 @@ package com.example.backend.security;
 
 
 
+import com.example.backend.models.FavoriteCard;
+import com.example.backend.models.MongoUser;
+import com.example.backend.models.MongoUserDTO;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-
+import java.security.Principal;
+import java.util.List;
 
 
 @RestController
@@ -24,6 +28,8 @@ public class UserController {
         return userService.getUserByLogin();
     }
 
+
+
     @PostMapping("/login")
     public String login(){
         return SecurityContextHolder.getContext().getAuthentication().getName();
@@ -40,6 +46,14 @@ public class UserController {
     public MongoUser addUser (@RequestBody MongoUserDTO mongoUserDTO){
         return userService.addUser(mongoUserDTO);
     }
+
+
+    @PutMapping("/favorites/{cardId}")
+    public List<FavoriteCard> addFavoriteCard (Principal principal, @PathVariable String cardId){
+        return userService.addFavorites(principal.getName(), cardId);
+    }
+
+
 
 
 
