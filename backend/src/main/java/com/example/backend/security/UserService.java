@@ -1,6 +1,9 @@
 package com.example.backend.security;
 
 
+import com.example.backend.models.FavoriteCard;
+import com.example.backend.models.MongoUser;
+import com.example.backend.models.MongoUserDTO;
 import com.example.backend.service.IDService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -43,6 +46,15 @@ public class UserService implements UserDetailsService {
         );
     }
 
+    public List<FavoriteCard> addFavorites(String username, String cardId){
+        MongoUser user = mongoUserRepo.findByUsername(username).orElseThrow();
+        List<FavoriteCard> cardList = user.favorites();
+        FavoriteCard newFavCard = new FavoriteCard(cardId);
+
+        cardList.add(newFavCard);
+        mongoUserRepo.save(user);
+        return cardList;
+    }
 
 
     public MongoUser getUserByLogin (){
@@ -52,6 +64,8 @@ public class UserService implements UserDetailsService {
                 .orElse(new MongoUser("","unknownUser","","", Collections.emptyList()));
 
     }
+
+
 
 
     @Override
