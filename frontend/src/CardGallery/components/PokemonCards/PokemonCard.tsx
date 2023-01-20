@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 
 type PokemonCardProps = {
     card: PokeCard
+    addCardToFavorites(id:string):void
 
 }
 
@@ -17,8 +18,10 @@ export default function PokemonCard(props: PokemonCardProps) {
         navigate("/details/" + props.card.id)
     }
 
-    function handleFavoritesClick (){
-        navigate("/users")
+    
+
+    function addCardIdOnClick(){
+        props.addCardToFavorites(props.card.id!)
     }
     return (
 
@@ -37,7 +40,7 @@ export default function PokemonCard(props: PokemonCardProps) {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Button onClick={handleFavoritesClick} variant={"outlined"} size="small" color="primary">
+                    <Button onClick={addCardIdOnClick} variant={"outlined"} size="small" color="primary">
                         Favorites
                     </Button>
                     <Button href="/exchange" variant={"outlined"} size="small" color="primary">
