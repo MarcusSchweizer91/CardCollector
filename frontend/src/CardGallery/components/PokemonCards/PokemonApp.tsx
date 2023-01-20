@@ -6,7 +6,7 @@ import useCards from "../hooks/useCards";
 
 export default function PokemonApp() {
 
-    const {pokeCards} = useCards()
+    const {pokeCards, addCardToFavorites} = useCards()
 
     const [searchText, setSearchText] = useState<string>("")
 
@@ -25,7 +25,7 @@ export default function PokemonApp() {
         <div>
             <div>
                 <SearchBar handleSearchText={handleSearchOnChange}/>
-                <PokemonGallery cards={filteredPokeCards}/>
+                <PokemonGallery addCardToFavorites={addCardToFavorites} cards={filteredPokeCards}/>
             </div>
 
         </div>
