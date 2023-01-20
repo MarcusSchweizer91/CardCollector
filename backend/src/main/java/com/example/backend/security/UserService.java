@@ -1,6 +1,7 @@
 package com.example.backend.security;
 
 
+import com.example.backend.exceptions.CardAlreadySavedException;
 import com.example.backend.models.FavoriteCard;
 import com.example.backend.models.MongoUser;
 import com.example.backend.models.MongoUserDTO;
@@ -50,6 +51,11 @@ public class UserService implements UserDetailsService {
     public Set<FavoriteCard> addFavorites(String username, String cardId){
         MongoUser user = mongoUserRepo.findByUsername(username).orElseThrow();
         Set<FavoriteCard> cardList = user.favorites();
+        for (FavoriteCard card : cardList){
+            if (card.id().equals(cardId)){
+                throw new CardAlreadySavedException("Card already saved!");
+            }
+        }
         FavoriteCard newFavCard = new FavoriteCard(cardId);
 
         cardList.add(newFavCard);
