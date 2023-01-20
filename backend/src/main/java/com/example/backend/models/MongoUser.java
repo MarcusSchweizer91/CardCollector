@@ -1,4 +1,4 @@
-package com.example.backend.security;
+package com.example.backend.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -15,6 +15,6 @@ public record MongoUser (
         String password,
         @Indexed(unique = true)
         String email,
-        List<String> favorites
+        List<FavoriteCard> favorites
 ){
 }

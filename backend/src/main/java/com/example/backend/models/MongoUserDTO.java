@@ -1,4 +1,4 @@
-package com.example.backend.security;
+package com.example.backend.models;
 
 import java.util.List;
 
@@ -7,6 +7,6 @@ public record MongoUserDTO(
         String username,
         String password,
         String email,
-        List<String> favorites
+        List<FavoriteCard> favorites
 ) {
 }
