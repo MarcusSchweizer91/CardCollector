@@ -1,13 +1,14 @@
 package com.example.backend.security;
 
+import com.example.backend.models.FavoriteCard;
+import com.example.backend.models.MongoUser;
+import com.example.backend.models.MongoUserDTO;
 import com.example.backend.service.IDService;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -43,7 +44,7 @@ class UserServiceTest {
     void loadUserByUsernameExpectUsername(){
 
         // GIVEN
-        MongoUser expected = new MongoUser("123", "Frank", "ABC", "abc", Collections.emptyList());
+        MongoUser expected = new MongoUser("123", "Frank", "ABC", "abc", Collections.emptySet());
         String username = "Frank";
 
         // WHEN
@@ -58,11 +59,12 @@ class UserServiceTest {
     void registerUser(){
         //Given
         String id = "1234";
+
         MongoUserDTO mongoUserDTO = new MongoUserDTO(
                 "Hans",
                 "123",
                 "test",
-                List.of("a","b"));
+                Collections.emptySet());
 
         // When
         when(idService.generateID()).thenReturn(id);
@@ -73,7 +75,7 @@ class UserServiceTest {
                 "Hans",
                 "***",
                 "test",
-                List.of("a","b"));
+                Collections.emptySet());
 
         when(mongoUserRepo.save(expectedUser)).thenReturn(expectedUser);
         MongoUser returnedUser = userService.addUser(mongoUserDTO);
@@ -84,4 +86,24 @@ class UserServiceTest {
         verify(argon2EncoderService, times(1)).encode("123");
         verify(mongoUserRepo, times(1)).save(expectedUser);
     }
+
+    @Test
+    void addFavorites() {
+        String cardId = "123";
+        FavoriteCard newFavCard = new FavoriteCard(cardId);
+
+        MongoUser user = new MongoUser("123","username","password","Max", new HashSet<>());
+
+        Set<FavoriteCard> newList = new HashSet<>();
+
+        newList.add(newFavCard);
+
+        when(mongoUserRepo.findByUsername("username")).thenReturn(Optional.of(user));
+
+        Set<FavoriteCard> result = userService.addFavorites("username",cardId);
+
+        assertEquals(result, newList);
+    }
+
+
 }
