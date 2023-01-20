@@ -1,5 +1,6 @@
 package com.example.backend.security;
 
+import com.example.backend.models.MongoUserDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 
+import java.util.Collections;
 
-import java.util.List;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -81,7 +82,7 @@ class UserControllerTest {
     @DirtiesContext
     void register() throws Exception {
 
-        MongoUserDTO mongoUserDTO = new MongoUserDTO("Ulf","123", "abc", List.of("a", "b"));
+        MongoUserDTO mongoUserDTO = new MongoUserDTO("Ulf","123", "abc", Collections.emptySet());
 
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(mongoUserDTO);
