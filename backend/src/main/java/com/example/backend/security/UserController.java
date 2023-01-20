@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.util.List;
+
+import java.util.Set;
 
 
 @RestController
@@ -49,7 +50,7 @@ public class UserController {
 
 
     @PutMapping("/favorites/{cardId}")
-    public List<FavoriteCard> addFavoriteCard (Principal principal, @PathVariable String cardId){
+    public Set<FavoriteCard> addFavoriteCard (Principal principal, @PathVariable String cardId){
         return userService.addFavorites(principal.getName(), cardId);
     }
 
