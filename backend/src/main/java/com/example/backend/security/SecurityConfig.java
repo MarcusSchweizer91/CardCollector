@@ -45,6 +45,7 @@ public class SecurityConfig extends AbstractSecurityWebApplicationInitializer {
                                 HttpStatus.UNAUTHORIZED.getReasonPhrase()))
                 .and()
                 .authorizeRequests()
+                .antMatchers("/").permitAll()
                 .antMatchers("/api/cards").permitAll()
                 .antMatchers("/api/users/me").permitAll()
                 .antMatchers("/api/users/login").permitAll()
