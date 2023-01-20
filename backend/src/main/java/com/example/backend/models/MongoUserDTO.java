@@ -1,12 +1,13 @@
 package com.example.backend.models;
 
-import java.util.List;
+
+import java.util.Set;
 
 public record MongoUserDTO(
 
         String username,
         String password,
         String email,
-        List<FavoriteCard> favorites
+        Set<FavoriteCard> favorites
 ) {
 }
