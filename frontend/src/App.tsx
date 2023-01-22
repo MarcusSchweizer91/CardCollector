@@ -11,13 +11,14 @@ import useUser from "./CardGallery/components/hooks/useUser";
 import ProtectedRoutes from "./CardGallery/components/ProtectedRoutes";
 import RegisterForm from "./CardGallery/components/user/RegisterForm";
 import UserDetails from "./CardGallery/components/user/UserDetails";
+import useFavorites from "./CardGallery/components/hooks/UseFavorites";
 
 
 function App() {
 
     const {userInfo, login, logout, register} = useUser();
 
-
+    const{favorites, getFavoriteCards} = useFavorites()
 
   return (
     <div className="App">
