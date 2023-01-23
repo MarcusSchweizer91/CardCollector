@@ -6,7 +6,7 @@ import java.util.List;
 
 @Document("cards")
 
-public record Card(
+public record PokeCard(
         String id,
         String name,
         String hp,
