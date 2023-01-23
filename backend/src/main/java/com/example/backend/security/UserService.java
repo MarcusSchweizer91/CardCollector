@@ -2,7 +2,7 @@ package com.example.backend.security;
 
 
 import com.example.backend.exceptions.CardAlreadySavedException;
-import com.example.backend.models.Card;
+import com.example.backend.models.PokeCard;
 import com.example.backend.models.FavoriteCard;
 import com.example.backend.models.MongoUser;
 import com.example.backend.models.MongoUserDTO;
@@ -65,13 +65,13 @@ public class UserService implements UserDetailsService {
         return cardList;
     }
 
-    public List<Card> getFavoriteCards (String username){
+    public List<PokeCard> getFavoriteCards (String username){
         Set<FavoriteCard> list = mongoUserRepo.findByUsername(username).orElseThrow().favorites();
 
-        List<Card> cardList = new ArrayList<>();
+        List<PokeCard> cardList = new ArrayList<>();
 
         for (FavoriteCard favCard: list){
-            Card card = cardRepo.findById(favCard.id()).orElseThrow();
+            PokeCard card = cardRepo.findById(favCard.id()).orElseThrow();
             cardList.add(card);
         }
         return cardList;
@@ -85,6 +85,18 @@ public class UserService implements UserDetailsService {
                 .orElse(new MongoUser("","unknownUser","","", Collections.emptySet()));
 
     }
+
+    public void removeCardFromFavorites(String cardId, String username) {
+        MongoUser user = mongoUserRepo.findByUsername(username).orElseThrow();
+        Set<FavoriteCard> favorites = user.favorites();
+        Optional<FavoriteCard> cardToRemove = favorites.stream()
+                .filter(card -> card.id().equals(cardId))
+                .findFirst();
+        cardToRemove.ifPresent(favorites::remove);
+        mongoUserRepo.save(user);
+    }
+
+
 
 
 
