@@ -1,6 +1,6 @@
 package com.example.backend.service;
 
-import com.example.backend.models.Card;
+import com.example.backend.models.PokeCard;
 import com.example.backend.repo.CardRepo;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +16,11 @@ public class CardService {
         this.cardRepo = cardRepo;
     }
 
-    public List<Card> getAllCards(){
+    public List<PokeCard> getAllCards(){
         return cardRepo.findAll();
     }
 
-    public Card getCardByID(String id){return cardRepo.findById(id).orElseThrow();}
+    public PokeCard getCardByID(String id){return cardRepo.findById(id).orElseThrow();}
+
+
 }
