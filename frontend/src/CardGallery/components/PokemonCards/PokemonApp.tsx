@@ -4,10 +4,15 @@ import SearchBar from "../SearchBar";
 import useCards from "../hooks/useCards";
 
 
-export default function PokemonApp() {
+type PokemonAppProps = {
 
-    const {pokeCards, addCardToFavorites} = useCards()
+    isCardInFavorites:(cardId: string) => boolean
+    addCardToFavorites(id:string):void
+    removeCardFromFavorites: (cardId: string) => Promise<void>
+}
+export default function PokemonApp(props: PokemonAppProps) {
 
+    const {pokeCards} = useCards()
     const [searchText, setSearchText] = useState<string>("")
 
 
@@ -25,7 +30,11 @@ export default function PokemonApp() {
         <div>
             <div>
                 <SearchBar handleSearchText={handleSearchOnChange}/>
-                <PokemonGallery addCardToFavorites={addCardToFavorites} cards={filteredPokeCards}/>
+                <PokemonGallery
+                                removeCardFromFavorites={props.removeCardFromFavorites}
+                                isCardInFavorites={props.isCardInFavorites}
+                                addCardToFavorites={props.addCardToFavorites}
+                                cards={filteredPokeCards}/>
             </div>
 
         </div>

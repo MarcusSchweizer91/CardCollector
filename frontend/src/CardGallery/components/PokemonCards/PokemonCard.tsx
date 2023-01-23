@@ -11,38 +11,31 @@ import {
 } from "@mui/material";
 import {PokeCard} from "../../models/PokeCard";
 import {useNavigate} from "react-router-dom";
-import {ChangeEvent, useEffect, useState} from "react";
+
 
 
 
 type PokemonCardProps = {
     card: PokeCard
+
     addCardToFavorites(id:string):void
-    isCardInFavorites:(cardId: string) => Promise<boolean>
+    isCardInFavorites:(cardId: string) => boolean
     removeCardFromFavorites: (cardId: string) => Promise<void>;
 
 }
 
 export default function PokemonCard(props: PokemonCardProps) {
 
-    const [isInFavorites, setIsInFavorites] = useState(false);
 
-    useEffect(() => {
-        props.isCardInFavorites(props.card.id).then(result => setIsInFavorites(result));
-    }, []);
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        if (isInFavorites) {
+    const handleChange = () => {
+        if (props.isCardInFavorites(props.card.id)) {
             props.removeCardFromFavorites(props.card.id!);
         } else {
             props.addCardToFavorites(props.card.id!);
         }
-        setIsInFavorites(!isInFavorites);
+
     };
-
-
-
-
 
 
     const navigate = useNavigate()
@@ -50,8 +43,6 @@ export default function PokemonCard(props: PokemonCardProps) {
     function handleDetailsClick() {
         navigate("/details/" + props.card.id)
     }
-
-    
 
 
     return (
@@ -76,7 +67,7 @@ export default function PokemonCard(props: PokemonCardProps) {
                     {/*</Button>*/}
 
                     <Switch
-                        checked={isInFavorites}
+                        checked={props.isCardInFavorites(props.card.id)}
                         onChange={handleChange}
                         inputProps={{ 'aria-label': 'controlled' }}
                     />
