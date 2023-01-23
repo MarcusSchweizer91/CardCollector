@@ -15,7 +15,8 @@ export default function useCards(){
 
     function getAllCards() {
         axios.get("/api/cards").then((response) => {
-            setPokeCards(response.data)
+            const filteredData = response.data.filter(Boolean);
+            setPokeCards(filteredData);
         })
             .catch(e => console.error(e))
     }
