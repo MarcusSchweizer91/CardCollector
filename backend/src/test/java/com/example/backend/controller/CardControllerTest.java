@@ -1,7 +1,7 @@
 package com.example.backend.controller;
 
 
-import com.example.backend.models.Card;
+import com.example.backend.models.PokeCard;
 import com.example.backend.models.Image;
 import com.example.backend.repo.CardRepo;
 import org.junit.jupiter.api.Test;
@@ -48,8 +48,8 @@ class CardControllerTest {
     void getCardById() throws Exception {
 
         Image image = new Image("image");
-        Card card = new Card("1", "Pikachu", "120", Collections.emptyList(), image);
-        Card result = cardRepo.save(card);
+        PokeCard card = new PokeCard("1", "Pikachu", "120", Collections.emptyList(), image);
+        PokeCard result = cardRepo.save(card);
 
         mockMvc.perform(get("/api/cards/details/" + result.id()).with(csrf()))
                 .andExpect(status().isOk())

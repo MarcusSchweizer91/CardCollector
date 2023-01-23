@@ -111,7 +111,7 @@ class UserControllerTest {
         mongoUserRepo.save(user1);
 
 
-        cardRepo.save(new Card("321", "Pikachu", "123", Collections.emptyList(), new Image("url")));
+        cardRepo.save(new PokeCard("321", "Pikachu", "123", Collections.emptyList(), new Image("url")));
 
         mockMvc.perform(put("/api/users/favorites/321")
                         .with(csrf()))

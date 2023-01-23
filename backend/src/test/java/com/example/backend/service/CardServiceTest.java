@@ -1,6 +1,6 @@
 package com.example.backend.service;
 
-import com.example.backend.models.Card;
+import com.example.backend.models.PokeCard;
 import com.example.backend.models.Image;
 import com.example.backend.repo.CardRepo;
 import org.junit.jupiter.api.Test;
@@ -23,10 +23,10 @@ class CardServiceTest {
     void getAllCards() {
 
         //Given
-        List<Card> expected = Collections.emptyList();
+        List<PokeCard> expected = Collections.emptyList();
         //When
         when(cardRepo.findAll()).thenReturn(expected);
-        List<Card> result = cardService.getAllCards();
+        List<PokeCard> result = cardService.getAllCards();
         //Then
         assertEquals(expected, result);
         verify(cardRepo).findAll();
@@ -39,14 +39,14 @@ class CardServiceTest {
 
         //Given
         Image image = new Image("image");
-        Card expectedCard = new Card("1", "Pikachu", "120", Collections.emptyList(),image);
+        PokeCard expectedCard = new PokeCard("1", "Pikachu", "120", Collections.emptyList(),image);
         String id = "1";
 
 
 
         //When
         when(cardRepo.findById(id)).thenReturn(Optional.of(expectedCard));
-        Card actualCard = cardService.getCardByID(id);
+        PokeCard actualCard = cardService.getCardByID(id);
         //Then
         assertEquals(expectedCard, actualCard);
         verify(cardRepo).findById(id);
