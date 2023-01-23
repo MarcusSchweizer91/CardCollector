@@ -145,7 +145,26 @@ class UserServiceTest {
         assertTrue(result.contains(card2));
     }
 
+    @Test
+    void removeCardFromFavorites() {
+
+        String cardId = "123";
+        String username = "Bob";
+        FavoriteCard favCard1 = new FavoriteCard("123");
+        FavoriteCard favCard2 = new FavoriteCard("456");
+        Set<FavoriteCard> favCards = new HashSet<>();
+        favCards.add(favCard1);
+        favCards.add(favCard2);
+        MongoUser user = new MongoUser("123", "Bob", "password", "email", favCards);
+        when(mongoUserRepo.findByUsername(username)).thenReturn(Optional.of(user));
 
 
+        userService.removeCardFromFavorites(cardId, username);
+
+
+        assertFalse(user.favorites().contains(favCard1));
+        assertTrue(user.favorites().contains(favCard2));
+        verify(mongoUserRepo).save(user);
+    }
 
 }
