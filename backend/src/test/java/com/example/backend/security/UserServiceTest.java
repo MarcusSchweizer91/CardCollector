@@ -1,9 +1,7 @@
 package com.example.backend.security;
 
 import com.example.backend.exceptions.CardAlreadySavedException;
-import com.example.backend.models.FavoriteCard;
-import com.example.backend.models.MongoUser;
-import com.example.backend.models.MongoUserDTO;
+import com.example.backend.models.*;
 import com.example.backend.repo.CardRepo;
 import com.example.backend.service.IDService;
 import org.junit.jupiter.api.Test;
@@ -120,6 +118,33 @@ class UserServiceTest {
         // When & Then
         assertThrows(CardAlreadySavedException.class, () -> userService.addFavorites(username, cardId));
     }
+
+    @Test
+    void getFavoriteCards() {
+
+        String username = "testuser";
+        FavoriteCard favCard1 = new FavoriteCard("123");
+        FavoriteCard favCard2 = new FavoriteCard("456");
+        Set<FavoriteCard> favCards = new HashSet<>();
+        favCards.add(favCard1);
+        favCards.add(favCard2);
+        Image image = new Image("image");
+        MongoUser user = new MongoUser("123", "Bob", "pasword", "email", favCards);
+        PokeCard card1 = new PokeCard("123", "Pikachu", "70", Collections.emptyList(), image);
+        PokeCard card2 = new PokeCard("456", "Charmander", "70", Collections.emptyList(), image);
+        when(mongoUserRepo.findByUsername(username)).thenReturn(Optional.of(user));
+        when(cardRepo.findById("123")).thenReturn(Optional.of(card1));
+        when(cardRepo.findById("456")).thenReturn(Optional.of(card2));
+
+
+        List<PokeCard> result = userService.getFavoriteCards(username);
+
+
+        assertEquals(2, result.size());
+        assertTrue(result.contains(card1));
+        assertTrue(result.contains(card2));
+    }
+
 
 
 
