@@ -76,17 +76,17 @@ export default function NavBar(props: NavBarProps) {
                 </ListItem>
                 <ListItem disablePadding>
                     <ListItemButton>
+                        <ListItemText><NavLink className={"dropDownNL"} to={"/register"}>Register</NavLink></ListItemText>
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton>
                         <ListItemText><NavLink className={"dropDownNL"} to={"/login"}>Login</NavLink></ListItemText>
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemText><NavLink className={"dropDownNL"} to={"/user"}>MyAccount</NavLink></ListItemText>
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton>
-                        <ListItemText><NavLink className={"dropDownNL"} to={"/register"}>SignUp</NavLink></ListItemText>
                     </ListItemButton>
                 </ListItem>
 
