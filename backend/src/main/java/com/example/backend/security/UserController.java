@@ -2,7 +2,7 @@ package com.example.backend.security;
 
 
 
-import com.example.backend.models.Card;
+import com.example.backend.models.PokeCard;
 import com.example.backend.models.FavoriteCard;
 import com.example.backend.models.MongoUser;
 import com.example.backend.models.MongoUserDTO;
@@ -57,9 +57,15 @@ public class UserController {
     }
 
     @GetMapping("/favorites")
-    public List<Card> getFavoriteCards (Principal principal){
+    public List<PokeCard> getFavoriteCards (Principal principal){
         return userService.getFavoriteCards(principal.getName());
     }
+
+    @DeleteMapping("/favorites/{cardId}")
+    public void removeCardFromFavorites(Principal principal, @PathVariable String cardId) {
+        userService.removeCardFromFavorites(cardId, principal.getName());
+    }
+
 
 
 
