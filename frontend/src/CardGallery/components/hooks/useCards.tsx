@@ -21,10 +21,7 @@ export default function useCards(){
             .catch(e => console.error(e))
     }
 
-    function addCardToFavorites(id: string){
-        axios.put("/api/users/favorites/" + id)
-            .catch(console.error)
-    }
 
-    return{pokeCards, addCardToFavorites}
+
+    return{pokeCards}
 }
