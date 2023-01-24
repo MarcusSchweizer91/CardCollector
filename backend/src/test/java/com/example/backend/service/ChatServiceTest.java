@@ -146,7 +146,25 @@ class ChatServiceTest {
         assertEquals("{\"senderUsername\":\"sender\",\"receiverUsername\":\"receiver\",\"message\":\"Hello\",\"timestamp\":\"2022-01-23T10:15:30\"}", sentTextMessage.getPayload());
     }
 
+    @Test
+    void handleTextMessage_shouldSaveMessageInRepo() throws Exception {
 
+        ChatMessage chatMessage = ChatMessage.builder()
+                .senderUsername("sender")
+                .receiverUsername("receiver")
+                .message("Hello")
+                .timestamp(LocalDateTime.now())
+                .build();
+        when(objectMapper.readValue(anyString(), eq(ChatMessage.class))).thenReturn(chatMessage);
+        when(session.getPrincipal()).thenReturn(() -> "sender");
+        when(objectMapper.writeValueAsString(chatMessage)).thenReturn("{\"senderUsername\":\"sender\",\"receiverUsername\":\"receiver\",\"message\":\"Hello\",\"timestamp\":\"2022-01-23T10:15:30\"}");
+
+
+        chatService.handleTextMessage(session, new TextMessage("{\"senderUsername\":\"sender\",\"receiverUsername\":\"receiver\",\"message\":\"Hello\",\"timestamp\":\"2022-01-23T10:15:30\"}"));
+
+
+        verify(chatRepo, times(1)).save(chatMessage);
+    }
 
     @Test
     void handleTextMessage_shouldSetId() throws Exception {
@@ -195,6 +213,9 @@ class ChatServiceTest {
 
         assertFalse(chatService.getSessions().contains(session));
     }
+
+
+
 
 
 }
