@@ -16,6 +16,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -214,6 +215,28 @@ class ChatServiceTest {
         assertFalse(chatService.getSessions().contains(session));
     }
 
+    @Test
+    void sendPreviousMessages_exceptionThrown_shouldSendErrorMessage() throws IOException {
+        // Arrange
+        ChatMessage message = new ChatMessage("id", "sender", "receiver", "message", LocalDateTime.now());
+        List<ChatMessage> messages = Collections.singletonList(message);
+        doThrow(new RuntimeException("Error occurred.")).when(session).sendMessage(any(TextMessage.class));
+        when(chatRepo.findAllBySenderUsernameAndReceiverUsername("sender", "receiver")).thenReturn(messages);
+        when(objectMapper.writeValueAsString(message)).thenReturn("{\"sender\":\"sender\",\"receiver\":\"receiver\",\"message\":\"message\",\"timestamp\":\"" + message.getTimestamp() + "\"}");
+
+        // Act
+        try {
+            chatService.sendPreviousMessages(session, "sender", "receiver");
+            fail();
+        } catch (Exception e) {
+            assertEquals("Error occurred.", e.getMessage());
+        }
+
+        // Assert
+        verify(session).sendMessage(new TextMessage("An error occurred while processing."));
+        verify(chatRepo).findAllBySenderUsernameAndReceiverUsername("sender", "receiver");
+
+    }
 
 
 
