@@ -79,7 +79,8 @@ class ExchangeControllerTest {
                 "search",
                 "12",
                 "Two Glurak",
-                "base64String"
+                "base64String",
+                "Bob"
 
         );
         ExchangeCard result = exchangeRepo.save(cardToExchange);
@@ -109,7 +110,8 @@ class ExchangeControllerTest {
                 "search",
                 "12",
                 "Two Glurak",
-                "base64String");
+                "base64String",
+                "Bob");
 
         exchangeRepo.save(cardToExchange);
 
@@ -146,7 +148,8 @@ class ExchangeControllerTest {
                 "search",
                 "12",
                 "Two Glurak",
-                "base64String"
+                "base64String",
+                "Bob"
 
         );
         exchangeRepo.save(cardToExchange);

@@ -17,6 +17,7 @@ export default function ExchangeForm(props: ExchangeFormProps) {
         type: "",
         price: "",
         alternative: ""
+
     }
 
     const [exchangeCard, setExchangeCard] = useState<CardToExchange>(emptyFormPlaceholder)

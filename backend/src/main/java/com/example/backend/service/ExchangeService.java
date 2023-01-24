@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -31,11 +32,11 @@ public class ExchangeService {
         return exchangeRepo.findAll();
     }
 
-    public ExchangeCard saveEntry(String exchangeCard, MultipartFile cardImage) throws IOException {
+    public ExchangeCard saveEntry(String exchangeCard, MultipartFile cardImage, Principal principal) throws IOException {
 
         ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
         ExchangeCardDTO exchangeCardDTO = objectMapper.readValue(exchangeCard, ExchangeCardDTO.class);
-
+        String author = principal.getName();
 
         ExchangeCard newCartToExchange = new ExchangeCard(
                 idService.generateID(),
@@ -44,7 +45,8 @@ public class ExchangeService {
                 exchangeCardDTO.type(),
                 exchangeCardDTO.price(),
                 exchangeCardDTO.alternative(),
-                Base64.getEncoder().encodeToString(cardImage.getBytes()));
+                Base64.getEncoder().encodeToString(cardImage.getBytes()),
+                author);
         return exchangeRepo.save(newCartToExchange);
     }
 
@@ -61,11 +63,11 @@ public class ExchangeService {
         exchangeRepo.deleteById(id);
     }
 
-    public ExchangeCard updateEntry (String id, String exchangeCard, MultipartFile cardImage) throws IOException {
+    public ExchangeCard updateEntry (String id, String exchangeCard, MultipartFile cardImage, String author) throws IOException {
 
         ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
         ExchangeCardDTO exchangeCardDTO = objectMapper.readValue(exchangeCard, ExchangeCardDTO.class);
-
+       
 
         ExchangeCard toEdit = new ExchangeCard(
                 id,
@@ -74,7 +76,8 @@ public class ExchangeService {
                 exchangeCardDTO.type(),
                 exchangeCardDTO.price(),
                 exchangeCardDTO.alternative(),
-                Base64.getEncoder().encodeToString(cardImage.getBytes()));
+                Base64.getEncoder().encodeToString(cardImage.getBytes()),
+                author);
         return exchangeRepo.save(toEdit);
     }
 
