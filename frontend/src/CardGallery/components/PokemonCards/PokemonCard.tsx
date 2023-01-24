@@ -13,8 +13,6 @@ import {PokeCard} from "../../models/PokeCard";
 import {useNavigate} from "react-router-dom";
 
 
-
-
 type PokemonCardProps = {
     card: PokeCard
 
@@ -30,9 +28,9 @@ export default function PokemonCard(props: PokemonCardProps) {
 
     const handleChange = () => {
         if (props.isCardInFavorites(props.card.id)) {
-            props.removeCardFromFavorites(props.card.id!);
+            props.removeCardFromFavorites(props.card.id);
         } else {
-            props.addCardToFavorites(props.card.id!);
+            props.addCardToFavorites(props.card.id);
         }
 
     };
