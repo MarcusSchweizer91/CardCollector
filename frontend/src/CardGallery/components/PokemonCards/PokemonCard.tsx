@@ -4,18 +4,18 @@ import {
     CardActionArea,
     CardActions,
     CardContent,
-    CardMedia,
+    CardMedia, Checkbox,
     Grid,
-    Switch,
     Typography
 } from "@mui/material";
 import {PokeCard} from "../../models/PokeCard";
 import {useNavigate} from "react-router-dom";
+import {Favorite, FavoriteBorder} from "@mui/icons-material";
+
 
 
 type PokemonCardProps = {
     card: PokeCard
-
     addCardToFavorites(id:string):void
     isCardInFavorites:(cardId: string) => boolean
     removeCardFromFavorites: (cardId: string) => Promise<void>;
@@ -64,10 +64,12 @@ export default function PokemonCard(props: PokemonCardProps) {
                     {/*    Add to Favorites*/}
                     {/*</Button>*/}
 
-                    <Switch
+                    <Checkbox
                         checked={props.isCardInFavorites(props.card.id)}
                         onChange={handleChange}
                         inputProps={{ 'aria-label': 'controlled' }}
+                        icon={<FavoriteBorder />}
+                        checkedIcon={<Favorite />}
                     />
 
                     <Button href="/exchange" variant={"outlined"} size="small" color="primary">
