@@ -1,5 +1,5 @@
 import {UserData} from "../../models/UserData";
-import {useEffect, useState} from "react";
+import {ChangeEvent, useEffect, useState} from "react";
 import useCards from "../hooks/useCards";
 import {PokeCard} from "../../models/PokeCard";
 import {
@@ -8,15 +8,18 @@ import {
     CardActionArea,
     CardActions,
     CardContent,
-    CardMedia,
+    CardMedia, Checkbox,
     Grid,
     Typography
 } from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {Favorite, FavoriteBorder} from "@mui/icons-material";
 
 type UserDetailsProps = {
 
     userInfo?: UserData
+    addCardToFavorites(id:string):void
+    isCardInFavorites:(cardId: string) => boolean
     getFavoriteCards: () => Promise<string[]>
     removeCardFromFavorites: (cardId: string) => Promise<void>
 }
@@ -43,9 +46,16 @@ export default function UserDetails(props: UserDetailsProps) {
     }
 
 
-    function handleDeleteFavoriteOnClick(cardId: string){
-        props.removeCardFromFavorites(cardId)
+    function handleDeleteFavoriteOnClick(event: ChangeEvent<HTMLInputElement>, checked: boolean) {
+        const cardId = event.currentTarget.value;
+        if (checked) {
+            props.addCardToFavorites(cardId);
+        } else {
+            props.removeCardFromFavorites(cardId);
+        }
     }
+
+
 
     return (
         <div>
@@ -81,7 +91,14 @@ export default function UserDetails(props: UserDetailsProps) {
                                     </div>
                                 </CardActionArea>
                                 <CardActions>
-
+                                    <Checkbox
+                                        checked={props.isCardInFavorites(card.id)}
+                                        onChange={handleDeleteFavoriteOnClick}
+                                        value={card.id}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                        icon={<FavoriteBorder />}
+                                        checkedIcon={<Favorite />}
+                                    />
                                     <Button href="/exchange"
                                             variant={"outlined"}
                                             size="small"
@@ -94,12 +111,7 @@ export default function UserDetails(props: UserDetailsProps) {
                                             color="primary">
                                         Exchange
                                     </Button>
-                                    <Button variant={"outlined"}
-                                            size="small"
-                                            color="primary"
-                                            onClick={() => handleDeleteFavoriteOnClick(card.id)}>
-                                        Delete
-                                    </Button>
+
                                 </CardActions>
                             </Card>
 
