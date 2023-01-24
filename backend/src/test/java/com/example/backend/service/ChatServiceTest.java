@@ -11,10 +11,11 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.io.IOException;
+
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -100,16 +101,100 @@ class ChatServiceTest {
         verifyNoMoreInteractions(session, chatRepo, objectMapper);
     }
 
+    @Test
+    void afterConnectionEstablished_shouldSendPreviousMessages() throws Exception {
+
+        ChatService chatServiceSpy = spy(chatService);
+        when(session.getPrincipal()).thenReturn(() -> "sender");
+        ChatMessage lastChatMessage = ChatMessage.builder()
+                .senderUsername("sender")
+                .receiverUsername("receiver")
+                .message("Hello")
+                .timestamp(LocalDateTime.now())
+                .build();
+        when(chatRepo.findFirstBySenderUsernameOrderByTimestampDesc("sender")).thenReturn(lastChatMessage);
+
+        chatServiceSpy.afterConnectionEstablished(session);
+
+        verify(chatRepo, times(1)).findFirstBySenderUsernameOrderByTimestampDesc("sender");
+        verify(chatServiceSpy, times(1)).sendPreviousMessages(session, "sender", "receiver");
+    }
+
+
+
+
+
 
     @Test
-    void afterConnectionEstablished() {
+    void handleTextMessage_shouldSendMessageToReceiver() throws Exception {
+
+        ChatMessage chatMessage = ChatMessage.builder()
+                .senderUsername("sender")
+                .receiverUsername("receiver")
+                .message("Hello")
+                .timestamp(LocalDateTime.now())
+                .build();
+        when(objectMapper.readValue(anyString(), eq(ChatMessage.class))).thenReturn(chatMessage);
+        when(session.getPrincipal()).thenReturn(() -> "sender");
+        when(objectMapper.writeValueAsString(chatMessage)).thenReturn("{\"senderUsername\":\"sender\",\"receiverUsername\":\"receiver\",\"message\":\"Hello\",\"timestamp\":\"2022-01-23T10:15:30\"}");
+
+        chatService.handleTextMessage(session, new TextMessage("{\"senderUsername\":\"sender\",\"receiverUsername\":\"receiver\",\"message\":\"Hello\",\"timestamp\":\"2022-01-23T10:15:30\"}"));
+
+
+        verify(session, times(1)).sendMessage(textMessageCaptor.capture());
+        TextMessage sentTextMessage = textMessageCaptor.getValue();
+        assertEquals("{\"senderUsername\":\"sender\",\"receiverUsername\":\"receiver\",\"message\":\"Hello\",\"timestamp\":\"2022-01-23T10:15:30\"}", sentTextMessage.getPayload());
+    }
+
+
+
+    @Test
+    void handleTextMessage_shouldSetId() throws Exception {
+
+        ChatMessage chatMessage = ChatMessage.builder()
+                .senderUsername("sender")
+                .receiverUsername("receiver")
+                .message("Hello")
+                .timestamp(LocalDateTime.now())
+                .build();
+        when(objectMapper.readValue(anyString(), eq(ChatMessage.class))).thenReturn(chatMessage);
+        when(session.getPrincipal()).thenReturn(() -> "sender");
+        when(objectMapper.writeValueAsString(chatMessage)).thenReturn("{\"senderUsername\":\"sender\",\"receiverUsername\":\"receiver\",\"message\":\"Hello\",\"timestamp\":\"2022-01-23T10:15:30\"}");
+
+        chatService.handleTextMessage(session, new TextMessage("{\"senderUsername\":\"sender\",\"receiverUsername\":\"receiver\",\"message\":\"Hello\",\"timestamp\":\"2022-01-23T10:15:30\"}"));
+
+
+        assertEquals(String.class, chatMessage.getId().getClass());
     }
 
     @Test
-    void handleTextMessage() {
+    void afterConnectionEstablished_shouldAddSessionToSessions() throws Exception {
+
+        when(session.getPrincipal()).thenReturn(() -> "sender");
+        ChatMessage lastChatMessage = ChatMessage.builder()
+                .senderUsername("sender")
+                .receiverUsername("receiver")
+                .message("Hello")
+                .timestamp(LocalDateTime.now())
+                .build();
+        when(chatRepo.findFirstBySenderUsernameOrderByTimestampDesc("sender")).thenReturn(lastChatMessage);
+
+        chatService.afterConnectionEstablished(session);
+
+        assertTrue(chatService.getSessions().contains(session));
     }
 
     @Test
-    void afterConnectionClosed() {
+    void afterConnectionClosed_shouldRemoveSessionFromSessions() throws Exception {
+
+        WebSocketSession session = mock(WebSocketSession.class);
+        CloseStatus status = new CloseStatus(1000, "reason");
+        chatService.getSessions().add(session);
+
+        chatService.afterConnectionClosed(session, status);
+
+        assertFalse(chatService.getSessions().contains(session));
     }
+
+
 }
