@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -26,8 +27,8 @@ public class ExchangeController {
     }
 
     @PostMapping
-    public ExchangeCard addEntry(@RequestPart(value = "entry") String entry, @RequestPart(value = "file") MultipartFile cardImage) throws IOException {
-        return exchangeService.saveEntry(entry, cardImage);
+    public ExchangeCard addEntry(@RequestPart(value = "entry") String entry, @RequestPart(value = "file") MultipartFile cardImage, Principal principal) throws IOException {
+        return exchangeService.saveEntry(entry, cardImage, principal);
     }
 
     @GetMapping(path = "/{id}")
@@ -36,8 +37,8 @@ public class ExchangeController {
     }
 
     @PutMapping(path = "/{id}")
-    public ExchangeCard updateEntry(@PathVariable String id, @RequestPart(value = "entry") String entryToUpdate, @RequestPart(value = "file") MultipartFile cardImage) throws IOException {
-        return exchangeService.updateEntry(id, entryToUpdate, cardImage);
+    public ExchangeCard updateEntry(@PathVariable String id, @RequestPart(value = "entry") String entryToUpdate, @RequestPart(value = "file") MultipartFile cardImage, String author) throws IOException {
+        return exchangeService.updateEntry(id, entryToUpdate, cardImage, author);
     }
 
     @DeleteMapping(path = "/{id}")

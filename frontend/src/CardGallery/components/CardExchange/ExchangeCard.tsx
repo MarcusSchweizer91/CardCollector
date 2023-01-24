@@ -22,6 +22,7 @@ export default function ExchangeCard(props: ExchangeCardProps) {
     const [type, setType] = useState(props.exchangeCard.type)
     const [price, setPrice] = useState(props.exchangeCard.price)
     const [alternative, setAlternative] = useState(props.exchangeCard.alternative)
+    const [author] = useState(props.exchangeCard.author)
 
 
     function onClickEditButton() {
@@ -36,7 +37,8 @@ export default function ExchangeCard(props: ExchangeCardProps) {
             description: description,
             type: type,
             price: price,
-            alternative: alternative
+            alternative: alternative,
+            author: author
         }
         props.editEntry(newEdit)
         setShowButton(false)
@@ -50,6 +52,10 @@ export default function ExchangeCard(props: ExchangeCardProps) {
 
     function handleDetailsClick() {
         navigate("/exchange/" + props.exchangeCard.id)
+    }
+
+    function handleChatButtonOnClick(){
+        navigate(`/chat/${props.exchangeCard.author}`)
     }
 
     return (
@@ -113,6 +119,9 @@ export default function ExchangeCard(props: ExchangeCardProps) {
                         <Button onClick={onClickEditButton} variant={"outlined"} size="small" color="primary" className={showButton? "disappear" : "show"} > Edit </Button>
                         <Button onClick={handleChange} variant={"outlined"} size="small" color="primary" className={showButton? "show" : "disappear"}>
                             Save
+                        </Button>
+                        <Button onClick={handleChatButtonOnClick} variant={"outlined"} size="small" color="primary">
+                            Send Message
                         </Button>
                     </CardActions>
                 </Card>
