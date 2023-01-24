@@ -11,6 +11,7 @@ String description,
 String type,
 String price,
 String alternative,
-String base64Image
+String base64Image,
+String author
 ) {
 }
