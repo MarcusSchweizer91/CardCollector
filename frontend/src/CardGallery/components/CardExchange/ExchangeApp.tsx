@@ -29,14 +29,16 @@ export default function ExchangeApp() {
             .catch(e => console.error(e))
     }
 
-    const addExchangeCard = (newCard: CardToExchange) => {
+    const addExchangeCard = (newCard: CardToExchange, ) => {
         let formData = new FormData();
         if (newCard.image){
             formData.append("file", newCard.image[0]);
         }
+
         formData.append("entry", JSON.stringify(newCard))
 
-        axios.post("/api/exchange", formData).then(getExchangeCards)
+        axios.post("/api/exchange", formData)
+            .then(getExchangeCards)
             .catch(e => console.error(e))
 
     }
