@@ -10,7 +10,8 @@ public record ExchangeCardDTO(
         String type,
         String price,
         String alternative,
-       @JsonIgnore
+        String author,
+        @JsonIgnore
         MultipartFile cardImage
 ) {
 }
