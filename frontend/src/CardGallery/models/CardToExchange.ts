@@ -7,6 +7,7 @@ export type CardToExchange = {
     price: string,
     alternative: string,
     image?: FileList,
-    base64Image?: string
+    base64Image?: string,
+    author?: string
 
 }
