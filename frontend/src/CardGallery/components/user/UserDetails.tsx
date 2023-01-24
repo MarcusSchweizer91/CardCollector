@@ -18,6 +18,7 @@ type UserDetailsProps = {
 
     userInfo?: UserData
     getFavoriteCards: () => Promise<string[]>
+    removeCardFromFavorites: (cardId: string) => Promise<void>
 }
 
 export default function UserDetails(props: UserDetailsProps) {
@@ -42,7 +43,9 @@ export default function UserDetails(props: UserDetailsProps) {
     }
 
 
-
+    function handleDeleteFavoriteOnClick(cardId: string){
+        props.removeCardFromFavorites(cardId)
+    }
 
     return (
         <div>
@@ -79,13 +82,22 @@ export default function UserDetails(props: UserDetailsProps) {
                                 </CardActionArea>
                                 <CardActions>
 
-                                    <Button href="/exchange" variant={"outlined"} size="small" color="primary">
+                                    <Button href="/exchange"
+                                            variant={"outlined"}
+                                            size="small"
+                                            color="primary">
                                         Buy
                                     </Button>
-                                    <Button href="/exchange" variant={"outlined"} size="small" color="primary">
+                                    <Button href="/exchange"
+                                            variant={"outlined"}
+                                            size="small"
+                                            color="primary">
                                         Exchange
                                     </Button>
-                                    <Button variant={"outlined"} size="small" color="primary">
+                                    <Button variant={"outlined"}
+                                            size="small"
+                                            color="primary"
+                                            onClick={() => handleDeleteFavoriteOnClick(card.id)}>
                                         Delete
                                     </Button>
                                 </CardActions>

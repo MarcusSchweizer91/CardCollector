@@ -37,7 +37,7 @@ function App() {
                     <Route path={"/exchange"} element={<ExchangeApp/>}></Route>
                     <Route path={"/details/:id"} element={<PokemonDetails/>}></Route>
                     <Route path={"/exchange/:id"} element={<ExchangeDetails/>}></Route>
-                    <Route path={"/user"} element={<UserDetails getFavoriteCards={getFavoriteCards}  userInfo={userInfo}/>}></Route>
+                    <Route path={"/user"} element={<UserDetails removeCardFromFavorites={removeCardFromFavorites} getFavoriteCards={getFavoriteCards}  userInfo={userInfo}/>}></Route>
                 </Route>
             </Routes>
         </BrowserRouter>
