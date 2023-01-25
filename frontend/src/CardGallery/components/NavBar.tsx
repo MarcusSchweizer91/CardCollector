@@ -16,7 +16,7 @@ import {
     Menu,
     MenuItem
 } from "@mui/material";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import "../components/css/NavBar.css"
 import {AccountCircle, StarBorder} from "@mui/icons-material";
 import logo from "../img/Logo2.png"
@@ -34,6 +34,7 @@ export default function NavBar(props: NavBarProps) {
 
     const open = Boolean(menu)
 
+    const navigate = useNavigate()
 
     const handleClose = () => {
         setMenu(null)
@@ -43,6 +44,7 @@ export default function NavBar(props: NavBarProps) {
     const handleClick = () => {
         handleClose();
         props.logout();
+        navigate("/");
     }
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
