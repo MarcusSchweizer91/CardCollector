@@ -9,7 +9,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.io.IOException;
+
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -33,27 +33,16 @@ public class ChatService extends TextWebSocketHandler {
         return chatRepo.save(message);
     }
 
-    public void sendPreviousMessages(WebSocketSession session, String senderUsername, String receiverUsername) throws IOException {
-        List<ChatMessage> messages = chatRepo.findAllBySenderUsernameAndReceiverUsername(senderUsername, receiverUsername);
-        messages.addAll(chatRepo.findAllBySenderUsernameAndReceiverUsername(receiverUsername, senderUsername));
-        messages.sort(Comparator.comparing(ChatMessage::getTimestamp));
-        for (ChatMessage message : messages) {
-            try {
-                session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
-            } catch (Exception e) {
-                session.sendMessage(new TextMessage("An error occurred while processing."));
-            }
-        }
-    }
+
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
         this.session.add(session);
-
         String senderUsername = Objects.requireNonNull(session.getPrincipal()).getName();
-        ChatMessage lastChatMessage = chatRepo.findFirstBySenderUsernameOrderByTimestampDesc(senderUsername);
-        sendPreviousMessages(session, senderUsername, lastChatMessage.getReceiverUsername());
+        getPreviousMessages(senderUsername, "receiver");
+
+
     }
 
     @Override
@@ -89,10 +78,12 @@ public class ChatService extends TextWebSocketHandler {
     }
 
     public List<ChatMessage> getPreviousMessages(String senderUsername, String receiverUsername){
+
         List<ChatMessage> messages = chatRepo.findAllBySenderUsernameAndReceiverUsername(senderUsername,receiverUsername);
         messages.addAll(chatRepo.findAllBySenderUsernameAndReceiverUsername(receiverUsername,senderUsername));
         messages.sort(Comparator.comparing(ChatMessage::getTimestamp));
         return messages;
     }
+
 
 }
