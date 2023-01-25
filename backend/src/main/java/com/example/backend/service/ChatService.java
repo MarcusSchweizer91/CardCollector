@@ -78,7 +78,6 @@ public class ChatService extends TextWebSocketHandler {
     }
 
     public List<ChatMessage> getPreviousMessages(String senderUsername, String receiverUsername){
-
         List<ChatMessage> messages = chatRepo.findAllBySenderUsernameAndReceiverUsername(senderUsername,receiverUsername);
         messages.addAll(chatRepo.findAllBySenderUsernameAndReceiverUsername(receiverUsername,senderUsername));
         messages.sort(Comparator.comparing(ChatMessage::getTimestamp));

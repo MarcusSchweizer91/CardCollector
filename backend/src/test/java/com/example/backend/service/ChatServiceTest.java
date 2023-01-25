@@ -75,17 +75,12 @@ class ChatServiceTest {
 
         ChatService chatServiceSpy = spy(chatService);
         when(session.getPrincipal()).thenReturn(() -> "sender");
-        ChatMessage lastChatMessage = ChatMessage.builder()
-                .senderUsername("sender")
-                .receiverUsername("receiver")
-                .message("Hello")
-                .timestamp(LocalDateTime.now())
-                .build();
-        when(chatRepo.findFirstBySenderUsernameOrderByTimestampDesc("sender")).thenReturn(lastChatMessage);
+
+        when(chatRepo.findAllBySenderUsernameAndReceiverUsername("sender", "receiver")).thenReturn(Collections.emptyList());
 
         chatServiceSpy.afterConnectionEstablished(session);
 
-        verify(chatRepo, times(1)).findFirstBySenderUsernameOrderByTimestampDesc("sender");
+        verify(chatRepo, times(1)).findAllBySenderUsernameAndReceiverUsername("sender", "receiver");
         verify(chatServiceSpy, times(1)).getPreviousMessages("sender", "receiver");
     }
 
@@ -155,13 +150,8 @@ class ChatServiceTest {
     void afterConnectionEstablished_shouldAddSessionToSessions() throws Exception {
 
         when(session.getPrincipal()).thenReturn(() -> "sender");
-        ChatMessage lastChatMessage = ChatMessage.builder()
-                .senderUsername("sender")
-                .receiverUsername("receiver")
-                .message("Hello")
-                .timestamp(LocalDateTime.now())
-                .build();
-        when(chatRepo.findFirstBySenderUsernameOrderByTimestampDesc("sender")).thenReturn(lastChatMessage);
+
+        when(chatRepo.findAllBySenderUsernameAndReceiverUsername("sender", "receiver")).thenReturn(Collections.emptyList());
 
         chatService.afterConnectionEstablished(session);
 
