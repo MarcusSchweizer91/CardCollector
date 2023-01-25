@@ -9,6 +9,7 @@ import SendIcon from '@mui/icons-material/Send';
 import "../css/UserChat.css";
 import moment from "moment/moment";
 
+
 type ChatOverviewProps = {
     user?: UserData
 }
@@ -70,16 +71,14 @@ export default function UserChat(props: ChatOverviewProps) {
     return (
         <div className="chat-page">
             <div className="chat-page-header">{receiverUsername}</div>
-            <List className={"chat-window"}>
+            <List className={"chat-window chat-messages"}>
                 {messages.map((chatMessage) => (
-                    <ListItem key={chatMessage.id}>
+                    <ListItem key={chatMessage.id} className={chatMessage.senderUsername === props.user?.username ? 'sender-message' : 'receiver-message'}>
                         <ListItemText
                             secondary={<span className={"senderName"}>{chatMessage.senderUsername} - {moment(chatMessage.timestamp).format("HH:mm - DD.MMM.YYYY")}
                              </span>}
                             primary={<span className={"message"}>{chatMessage.message}</span>}
                         />
-
-
                     </ListItem>
                 ))}
             </List>
