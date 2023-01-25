@@ -13,6 +13,7 @@ import RegisterForm from "./CardGallery/components/user/RegisterForm";
 import UserDetails from "./CardGallery/components/user/UserDetails";
 import useFavorites from "./CardGallery/components/hooks/useFavorites";
 import UserChat from "./CardGallery/components/Chat/UserChat";
+import ChatOverview from "./CardGallery/components/Chat/ChatOverview";
 
 
 
@@ -39,7 +40,8 @@ function App() {
                     <Route path={"/details/:id"} element={<PokemonDetails/>}></Route>
                     <Route path={"/exchange/:id"} element={<ExchangeDetails/>}></Route>
                     <Route path={"/user"} element={<UserDetails isCardInFavorites={isCardInFavorites} addCardToFavorites={(id) => addCardToFavorites(id, favorites)} removeCardFromFavorites={removeCardFromFavorites} getFavoriteCards={getFavoriteCards}  userInfo={userInfo}/>}></Route>
-                    <Route path="/chat/:receiverUsername" element={<UserChat />}></Route>
+                    <Route path="/chat/:receiverUsername" element={<UserChat user={userInfo} />}></Route>
+                    <Route path={"/chatOverview"} element={<ChatOverview/>} />
                 </Route>
             </Routes>
         </BrowserRouter>
