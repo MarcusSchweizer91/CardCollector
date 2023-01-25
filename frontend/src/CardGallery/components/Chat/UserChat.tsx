@@ -69,7 +69,7 @@ export default function UserChat(props: ChatOverviewProps) {
 
     return (
         <div className="chat-page">
-            <div className="chat-page-header">Chatting with {receiverUsername}</div>
+            <div className="chat-page-header">{receiverUsername}</div>
             <List className={"chat-window"}>
                 {messages.map((chatMessage) => (
                     <ListItem key={chatMessage.id}>
