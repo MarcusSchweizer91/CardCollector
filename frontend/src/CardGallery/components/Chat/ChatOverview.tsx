@@ -3,7 +3,11 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {UserData} from "../../models/UserData";
 
-export default function ChatOverview() {
+type ChatOverviewProps={
+    user?: UserData
+}
+
+export default function ChatOverview(props: ChatOverviewProps) {
     const [users, setUsers] = useState<string[]>([]);
     const navigate = useNavigate();
 
@@ -15,13 +19,21 @@ export default function ChatOverview() {
             .catch((error) => console.log(error));
     }, []);
 
+    const mapUsers = users.map((username) => {
+        if(username === props.user?.username){
+            return <></>
+        }
+        return <div className="user" key={username} onClick={() => navigate(`/chat/${username}`)}>
+            {username}
+        </div>
+
+    })
+
+
     return (
         <div className="users-list">
-            {users.map((username) => (
-                <div className="user" key={username} onClick={() => navigate(`/chat/${username}`)}>
-                    {username}
-                </div>
-            ))}
+
+            {mapUsers}
         </div>
     );
 }
