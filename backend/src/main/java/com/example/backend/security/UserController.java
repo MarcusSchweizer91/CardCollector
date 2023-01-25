@@ -66,6 +66,11 @@ public class UserController {
         userService.removeCardFromFavorites(cardId, principal.getName());
     }
 
+    @GetMapping("/all")
+    public List<MongoUser> getAllUsers(){
+        return userService.getAllUsers();
+    }
+
 
 
 
