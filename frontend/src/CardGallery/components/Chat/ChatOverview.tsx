@@ -1,9 +1,12 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {UserData} from "../../models/UserData";
+import "../css/ChatOverview.css"
+import {Paper} from "@mui/material";
 
-type ChatOverviewProps={
+
+type ChatOverviewProps = {
     user?: UserData
 }
 
@@ -23,16 +26,22 @@ export default function ChatOverview(props: ChatOverviewProps) {
     const filteredUsers = users.filter((username) => username !== props.user?.username);
 
     const mapUsers = filteredUsers.map((username) => (
-        <div className="user" key={username} onClick={() => navigate(`/chat/${username}`)}>
-            {username}
-        </div>
+
+            <Paper className={"paper"}>
+                <div className="user" key={username} onClick={() => navigate(`/chat/${username}`)}>
+                    {username}
+                </div>
+            </Paper>
+
     ));
 
 
     return (
         <div className="users-list">
+            <div className="chat-page-header">Direktnachrichten</div>
 
-                {mapUsers}
+
+            {mapUsers}
 
 
         </div>
