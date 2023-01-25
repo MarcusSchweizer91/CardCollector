@@ -67,8 +67,8 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public List<MongoUser> getAllUsers(){
-        return userService.getAllUsers();
+    public List<String> getAllUsernames(){
+        return userService.getAllUsernames();
     }
 
 
