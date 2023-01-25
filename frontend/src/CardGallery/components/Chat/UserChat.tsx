@@ -2,40 +2,66 @@ import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {ChatMessage, NewChatMessage} from "../../models/ChatMessage";
 
-export default function UserChat(){
+import axios from "axios";
+import {UserData} from "../../models/UserData";
+
+
+type ChatOverviewProps = {
+    user?: UserData
+}
+
+export default function UserChat(props: ChatOverviewProps) {
 
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [message, setMessage] = useState('');
     const [ws, setWs] = useState<WebSocket | null>(null);
-    const { senderUsername, receiverUsername } = useParams<{ senderUsername: string, receiverUsername: string }>();
+
+    const {receiverUsername} = useParams<{ receiverUsername: string }>();
+
+
 
     console.log(messages);
+
     useEffect(() => {
+        if (!props.user) return
+        axios.get<ChatMessage[]>(`/api/chat/previous-messages?senderUsername=${props.user.username}&receiverUsername=${receiverUsername}`)
+            .then((res) => {
+                setMessages(res.data);
+            })
+            .catch((error) => console.log(error));
+
         const ws = new WebSocket(`ws://localhost:8080/api/ws/chat`);
         setWs(ws);
 
         ws.onmessage = (event) => {
+            if(!props.user)return
             const data = JSON.parse(event.data);
-            console.log(event);
-            setMessages((prevMessages) => [...prevMessages, data]);
+            if (data.senderUsername === props.user.username && data.receiverUsername === receiverUsername) {
+                setMessages((prevMessages) => [...prevMessages, data]);
+            }
+        };
+        ws.onclose = () => {
+            setMessages([]);
         };
 
         return () => {
-            ws.close();
+            if (ws) {
+                ws.close();
+            }
         };
-    }, [senderUsername, receiverUsername]);
+    }, [props.user, receiverUsername]);
+
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        if (receiverUsername !== undefined) {
-
+        if (receiverUsername !== undefined && props.user && ws && ws.readyState === WebSocket.OPEN) {
+            const senderUsername = props.user.username
             const newChatMessage: NewChatMessage = {
-                receiverUsername: receiverUsername,
-                message,
+                senderUsername,
+                receiverUsername,
+                message
             };
-            if (ws) {
-                ws.send(JSON.stringify(newChatMessage));
-            }
+            ws.send(JSON.stringify(newChatMessage));
             setMessage('');
         }
     };
