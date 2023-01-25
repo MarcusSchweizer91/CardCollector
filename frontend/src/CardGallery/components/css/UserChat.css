@@ -21,3 +21,19 @@
 .chat-window{
     border: 1px solid lightgray;
 }
+
+.chat-messages .sender-message{
+    text-align: end;
+    background-color: blue;
+    color: white;
+    margin-left: auto;
+    padding: 1em;
+}
+
+.chat-messages .receiver-message{
+    text-align: start;
+    background-color: gray;
+    color: white;
+    margin-right: auto;
+    padding: 1em;
+}
