@@ -16,7 +16,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 
-import java.io.IOException;
+
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -71,39 +71,6 @@ class ChatServiceTest {
 
 
     @Test
-    void sendPreviousMessagesTest() throws Exception {
-        List<ChatMessage> messages = Arrays.asList(
-                ChatMessage.builder()
-                        .senderUsername("sender")
-                        .receiverUsername("receiver")
-                        .message("Hello")
-                        .timestamp(LocalDateTime.now())
-                        .build(),
-                ChatMessage.builder()
-                        .senderUsername("receiver")
-                        .receiverUsername("sender")
-                        .message("Hi")
-                        .timestamp(LocalDateTime.now())
-                        .build()
-        );
-        lenient().when(session.getPrincipal()).thenReturn(() -> "sender");
-        when(objectMapper.writeValueAsString(messages.get(0))).thenReturn("{\"sender\":\"sender\",\"receiver\":\"receiver\",\"message\":\"Hello\",\"timestamp\":\"" + messages.get(0).getTimestamp() + "\"}");
-        when(objectMapper.writeValueAsString(messages.get(1))).thenReturn("{\"sender\":\"receiver\",\"receiver\":\"sender\",\"message\":\"Hi\",\"timestamp\":\"" + messages.get(1).getTimestamp() + "\"}");
-        when(chatRepo.findAllBySenderUsernameAndReceiverUsername("sender", "receiver"))
-                .thenReturn(messages);
-        chatService.sendPreviousMessages(session, "sender", "receiver");
-        ArgumentCaptor<TextMessage> textMessageArgumentCaptor = ArgumentCaptor.forClass(TextMessage.class);
-        verify(session, times(2)).sendMessage(textMessageArgumentCaptor.capture());
-        List<TextMessage> capturedTextMessages = textMessageArgumentCaptor.getAllValues();
-
-        assertEquals("{\"sender\":\"sender\",\"receiver\":\"receiver\",\"message\":\"Hello\",\"timestamp\":\"" + messages.get(0).getTimestamp() + "\"}", capturedTextMessages.get(0).getPayload());
-        assertEquals("{\"sender\":\"receiver\",\"receiver\":\"sender\",\"message\":\"Hi\",\"timestamp\":\"" + messages.get(1).getTimestamp() + "\"}", capturedTextMessages.get(1).getPayload());
-        verify(chatRepo).findAllBySenderUsernameAndReceiverUsername("sender", "receiver");
-        verify(chatRepo).findAllBySenderUsernameAndReceiverUsername("receiver", "sender");
-        verifyNoMoreInteractions(session, chatRepo, objectMapper);
-    }
-
-    @Test
     void afterConnectionEstablished_shouldSendPreviousMessages() throws Exception {
 
         ChatService chatServiceSpy = spy(chatService);
@@ -119,8 +86,9 @@ class ChatServiceTest {
         chatServiceSpy.afterConnectionEstablished(session);
 
         verify(chatRepo, times(1)).findFirstBySenderUsernameOrderByTimestampDesc("sender");
-        verify(chatServiceSpy, times(1)).sendPreviousMessages(session, "sender", "receiver");
+        verify(chatServiceSpy, times(1)).getPreviousMessages("sender", "receiver");
     }
+
 
 
     @Test
@@ -212,28 +180,7 @@ class ChatServiceTest {
         assertFalse(chatService.getSession().contains(session));
     }
 
-    @Test
-    void sendPreviousMessages_exceptionThrown_shouldSendErrorMessage() throws IOException {
-        // Arrange
-        ChatMessage message = new ChatMessage("id", "sender", "receiver", "message", LocalDateTime.now());
-        List<ChatMessage> messages = Collections.singletonList(message);
-        doThrow(new RuntimeException("Error occurred.")).when(session).sendMessage(any(TextMessage.class));
-        when(chatRepo.findAllBySenderUsernameAndReceiverUsername("sender", "receiver")).thenReturn(messages);
-        when(objectMapper.writeValueAsString(message)).thenReturn("{\"sender\":\"sender\",\"receiver\":\"receiver\",\"message\":\"message\",\"timestamp\":\"" + message.getTimestamp() + "\"}");
 
-        // Act
-        try {
-            chatService.sendPreviousMessages(session, "sender", "receiver");
-            fail();
-        } catch (Exception e) {
-            assertEquals("Error occurred.", e.getMessage());
-        }
-
-        // Assert
-        verify(session).sendMessage(new TextMessage("An error occurred while processing."));
-        verify(chatRepo).findAllBySenderUsernameAndReceiverUsername("sender", "receiver");
-
-    }
 
     @Test
     void testForLoopAndSendMessageSuccess() throws Exception {
