@@ -271,5 +271,21 @@ class ChatServiceTest {
         verify(receiverSession).sendMessage(textMessage);
     }
 
+    @Test
+    void getPreviousMessages_shouldReturnSortedListOfPreviousMessages() {
+
+        ChatMessage message1 = ChatMessage.builder().id("1").senderUsername("sender1").receiverUsername("receiver1").message("message1").timestamp(LocalDateTime.of(2020, 1, 1, 0, 0, 0)).build();
+        ChatMessage message2 = ChatMessage.builder().id("2").senderUsername("receiver1").receiverUsername("sender1").message("message2").timestamp(LocalDateTime.of(2021, 1, 2, 0, 9, 0)).build();
+        List<ChatMessage> messageList = new ArrayList<>(Arrays.asList(message1, message2));
+        when(chatRepo.findAllBySenderUsernameAndReceiverUsername(anyString(), anyString())).thenReturn(messageList);
+
+        List<ChatMessage> previousMessages = chatService.getPreviousMessages("sender1", "receiver1");
+
+        assertEquals(4, previousMessages.size());
+        assertTrue(previousMessages.get(0).getTimestamp().isBefore(previousMessages.get(previousMessages.size()-1).getTimestamp()));
+        verify(chatRepo).findAllBySenderUsernameAndReceiverUsername("sender1", "receiver1");
+        verify(chatRepo).findAllBySenderUsernameAndReceiverUsername("receiver1", "sender1");
+    }
+
 
 }
