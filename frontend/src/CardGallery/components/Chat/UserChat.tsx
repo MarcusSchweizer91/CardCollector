@@ -4,7 +4,10 @@ import {ChatMessage, NewChatMessage} from "../../models/ChatMessage";
 
 import axios from "axios";
 import {UserData} from "../../models/UserData";
-
+import {Button, List, ListItem, ListItemText, TextField} from "@mui/material";
+import SendIcon from '@mui/icons-material/Send';
+import "../css/UserChat.css";
+import moment from "moment/moment";
 
 type ChatOverviewProps = {
     user?: UserData
@@ -15,9 +18,7 @@ export default function UserChat(props: ChatOverviewProps) {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [message, setMessage] = useState('');
     const [ws, setWs] = useState<WebSocket | null>(null);
-
     const {receiverUsername} = useParams<{ receiverUsername: string }>();
-
 
 
     console.log(messages);
@@ -34,7 +35,7 @@ export default function UserChat(props: ChatOverviewProps) {
         setWs(ws);
 
         ws.onmessage = (event) => {
-            if(!props.user)return
+            if (!props.user) return
             const data = JSON.parse(event.data);
             if (data.senderUsername === props.user.username && data.receiverUsername === receiverUsername) {
                 setMessages((prevMessages) => [...prevMessages, data]);
@@ -69,22 +70,34 @@ export default function UserChat(props: ChatOverviewProps) {
     return (
         <div className="chat-page">
             <div className="chat-page-header">Chatting with {receiverUsername}</div>
-            <div className="chat-page-messages">
+            <List className={"chat-window"}>
                 {messages.map((chatMessage) => (
-                    <div className="chat-message" key={chatMessage.id}>
-                        <div className="chat-message-username">{chatMessage.senderUsername}</div>
-                        <div className="chat-message-text">{chatMessage.message}</div>
-                        <div className="chat-message-timestamp">{chatMessage.timestamp.toString()}</div>
-                    </div>
+                    <ListItem key={chatMessage.id}>
+                        <ListItemText
+                            secondary={<span className={"senderName"}>{chatMessage.senderUsername} - {moment(chatMessage.timestamp).format("HH:mm - DD.MMM.YYYY")}
+                             </span>}
+                            primary={<span className={"message"}>{chatMessage.message}</span>}
+                        />
+
+
+                    </ListItem>
                 ))}
-            </div>
+            </List>
             <form className="chat-page-form" onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    value={message}
-                    onChange={(event) => setMessage(event.target.value)}
-                />
-                <button type="submit">Send</button>
+                <div className={"chatInput"}>
+                    <TextField
+                        type="text"
+                        variant={"outlined"}
+                        fullWidth
+                        value={message}
+                        onChange={(event) => setMessage(event.target.value)}
+                        size={"small"}
+                    />
+
+                    <Button type={"submit"} variant="contained" endIcon={<SendIcon/>}>
+                        Send
+                    </Button>
+                </div>
             </form>
         </div>
     );

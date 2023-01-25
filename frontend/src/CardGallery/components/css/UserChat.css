@@ -1,0 +1,23 @@
+.chatInput{
+    display: flex;
+}
+
+.senderName{
+    font-weight: inherit;
+    color: dimgray;
+}
+
+.message{
+    color: black;
+    font-weight: bold;
+}
+
+.chat-page-header{
+    font-weight: bold;
+    font-size: x-large;
+    margin: 1rem 0;
+}
+
+.chat-window{
+    border: 1px solid lightgray;
+}
