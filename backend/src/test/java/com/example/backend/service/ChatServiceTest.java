@@ -22,6 +22,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 class ChatServiceTest {
     @Mock
@@ -46,10 +47,10 @@ class ChatServiceTest {
 
         ChatService spyChatService = spy(new ChatService(chatRepo, objectMapper));
         Set<WebSocketSession> expectedSessions = new HashSet<>();
-        doReturn(expectedSessions).when(spyChatService).getSessions();
+        doReturn(expectedSessions).when(spyChatService).getSession();
 
 
-        Set<WebSocketSession> actualSessions = spyChatService.getSessions();
+        Set<WebSocketSession> actualSessions = spyChatService.getSession();
 
 
         assertEquals(expectedSessions, actualSessions);
@@ -120,10 +121,6 @@ class ChatServiceTest {
         verify(chatRepo, times(1)).findFirstBySenderUsernameOrderByTimestampDesc("sender");
         verify(chatServiceSpy, times(1)).sendPreviousMessages(session, "sender", "receiver");
     }
-
-
-
-
 
 
     @Test
@@ -200,7 +197,7 @@ class ChatServiceTest {
 
         chatService.afterConnectionEstablished(session);
 
-        assertTrue(chatService.getSessions().contains(session));
+        assertTrue(chatService.getSession().contains(session));
     }
 
     @Test
@@ -208,11 +205,11 @@ class ChatServiceTest {
 
         WebSocketSession session = mock(WebSocketSession.class);
         CloseStatus status = new CloseStatus(1000, "reason");
-        chatService.getSessions().add(session);
+        chatService.getSession().add(session);
 
         chatService.afterConnectionClosed(session, status);
 
-        assertFalse(chatService.getSessions().contains(session));
+        assertFalse(chatService.getSession().contains(session));
     }
 
     @Test
@@ -238,7 +235,41 @@ class ChatServiceTest {
 
     }
 
+    @Test
+    void testForLoopAndSendMessageSuccess() throws Exception {
 
+        ChatMessage chatMessage = new ChatMessage("id", "Marcus", "receiver", "message", LocalDateTime.now());
+        System.out.println(objectMapper.writeValueAsString(chatMessage));
+        when(session.getPrincipal()).thenReturn(() -> "Marcus");
+
+
+        TextMessage textMessage = new TextMessage("""
+                {
+                "id":"id",
+                "senderUsername":"Marcus",
+                "receiverUsername:"receiver",
+                "message":"message",
+                "timestamp":
+                }
+                """);
+        when(objectMapper.readValue(textMessage.getPayload(), ChatMessage.class)).thenReturn(chatMessage);
+
+        when(objectMapper.writeValueAsString(chatMessage)).thenReturn("""
+                {
+                "id":"id",
+                "senderUsername":"Marcus",
+                "receiverUsername:"receiver",
+                "message":"message",
+                "timestamp":
+                }
+                """);
+        WebSocketSession receiverSession = mock(WebSocketSession.class);
+        when(receiverSession.getPrincipal()).thenReturn(() -> "receiver");
+        chatService.getSession().add(receiverSession);
+        chatService.handleTextMessage(session, textMessage);
+
+        verify(receiverSession).sendMessage(textMessage);
+    }
 
 
 }
