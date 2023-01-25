@@ -31,7 +31,11 @@ export default function NavBar(props: NavBarProps) {
 
     const [menu, setMenu] = React.useState<null | HTMLElement>(null)
     const [userLogin, setUserLogin] = React.useState<null | HTMLElement>(null)
+    const [state, setState] = React.useState({
 
+        left: false
+
+    });
     const open = Boolean(menu)
 
     const navigate = useNavigate()
@@ -52,11 +56,7 @@ export default function NavBar(props: NavBarProps) {
 
     };
 
-    const [state, setState] = React.useState({
 
-        left: false
-
-    });
 
     const toggleDrawer =
         (anchor: Anchor, open: boolean) =>
