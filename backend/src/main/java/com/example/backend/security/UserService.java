@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+
 @Service
 public class UserService implements UserDetailsService {
 
@@ -97,8 +98,11 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public List<MongoUser> getAllUsers() {
-        return mongoUserRepo.findAll();
+    public List<String> getAllUsernames() {
+
+        return mongoUserRepo.findAll().stream()
+                .map(MongoUser::username)
+                .toList();
     }
 
 
