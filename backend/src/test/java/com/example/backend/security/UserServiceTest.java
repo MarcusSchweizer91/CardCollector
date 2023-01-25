@@ -170,14 +170,16 @@ class UserServiceTest {
     @Test
     void testGetAllUsers() {
         // Arrange
-        MongoUser user1 = new MongoUser("1", "user1", "password", "user1@example.com", Collections.emptySet());
-        MongoUser user2 = new MongoUser("2", "user2", "password", "user2@example.com", Collections.emptySet());
-        MongoUser user3 = new MongoUser("3", "user3", "password", "user3@example.com", Collections.emptySet());
-        List<MongoUser> expectedUsers = Arrays.asList(user1, user2, user3);
-        when(mongoUserRepo.findAll()).thenReturn(expectedUsers);
+        List<String> expectedUsers = Arrays.asList("user1", "user2", "user3");
+
+        when(mongoUserRepo.findAll()).thenReturn(Arrays.asList(
+                new MongoUser("1", "user1", "password", "user1@example.com", Collections.emptySet()),
+                new MongoUser("2", "user2", "password", "user2@example.com", Collections.emptySet()),
+                new MongoUser("3", "user3", "password", "user3@example.com", Collections.emptySet())
+        ));
 
         // Act
-        List<MongoUser> returnedUsers = userService.getAllUsers();
+        List<String> returnedUsers = userService.getAllUsernames();
 
         // Assert
         assertEquals(expectedUsers, returnedUsers);
