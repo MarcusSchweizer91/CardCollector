@@ -97,7 +97,9 @@ public class UserService implements UserDetailsService {
     }
 
 
-
+    public List<MongoUser> getAllUsers() {
+        return mongoUserRepo.findAll();
+    }
 
 
 
