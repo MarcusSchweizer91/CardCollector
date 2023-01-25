@@ -53,9 +53,7 @@ public class ChatService extends TextWebSocketHandler {
 
         String senderUsername = Objects.requireNonNull(session.getPrincipal()).getName();
         ChatMessage lastChatMessage = chatRepo.findFirstBySenderUsernameOrderByTimestampDesc(senderUsername);
-        if (lastChatMessage != null) {
-            sendPreviousMessages(session, senderUsername, lastChatMessage.getReceiverUsername());
-        }
+        sendPreviousMessages(session, senderUsername, lastChatMessage.getReceiverUsername());
     }
 
     @Override
@@ -88,6 +86,13 @@ public class ChatService extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         super.afterConnectionClosed(session, status);
         this.session.remove(session);
+    }
+
+    public List<ChatMessage> getPreviousMessages(String senderUsername, String receiverUsername){
+        List<ChatMessage> messages = chatRepo.findAllBySenderUsernameAndReceiverUsername(senderUsername,receiverUsername);
+        messages.addAll(chatRepo.findAllBySenderUsernameAndReceiverUsername(receiverUsername,senderUsername));
+        messages.sort(Comparator.comparing(ChatMessage::getTimestamp));
+        return messages;
     }
 
 }
