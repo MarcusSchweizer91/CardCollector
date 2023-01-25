@@ -12,9 +12,9 @@ export default function ChatOverview(props: ChatOverviewProps) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get<UserData[]>('/api/users/all')
+        axios.get<string[]>('/api/users/all')
             .then((res) => {
-                setUsers(res.data.map((user) => user.username))
+                setUsers(res.data.map((user) => user))
             })
             .catch((error) => console.log(error));
     }, []);
