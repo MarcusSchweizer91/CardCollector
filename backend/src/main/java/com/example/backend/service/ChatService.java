@@ -18,15 +18,15 @@ public class ChatService extends TextWebSocketHandler {
 
     private final ChatRepo chatRepo;
     private final ObjectMapper objectMapper;
-    private final Set<WebSocketSession> sessions = new HashSet<>();
+    private final Set<WebSocketSession> session = new HashSet<>();
 
     public ChatService(ChatRepo chatRepo, ObjectMapper objectMapper) {
         this.chatRepo = chatRepo;
         this.objectMapper = objectMapper;
     }
 
-    public Set<WebSocketSession> getSessions(){
-        return sessions;
+    public Set<WebSocketSession> getSession(){
+        return session;
     }
 
     public ChatMessage saveMessage (ChatMessage message){
@@ -49,7 +49,7 @@ public class ChatService extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
-        sessions.add(session);
+        this.session.add(session);
 
         String senderUsername = Objects.requireNonNull(session.getPrincipal()).getName();
         ChatMessage lastChatMessage = chatRepo.findFirstBySenderUsernameOrderByTimestampDesc(senderUsername);
@@ -63,13 +63,14 @@ public class ChatService extends TextWebSocketHandler {
         super.handleTextMessage(session, message);
 
         ChatMessage chatMessage = objectMapper.readValue(message.getPayload(), ChatMessage.class);
+
         chatMessage.setSenderUsername(Objects.requireNonNull(session.getPrincipal()).getName());
         chatMessage.setTimestamp(LocalDateTime.now());
         chatMessage.setId(UUID.randomUUID().toString());
 
         TextMessage textMessage = new TextMessage(objectMapper.writeValueAsString(chatMessage));
 
-        for (WebSocketSession sessionFromSessions : sessions) {
+        for (WebSocketSession sessionFromSessions : this.session) {
             if (sessionFromSessions.getPrincipal() != null && Objects.requireNonNull(sessionFromSessions.getPrincipal()).getName().equals(chatMessage.getReceiverUsername())) {
                 try {
                     sessionFromSessions.sendMessage(textMessage);
@@ -86,7 +87,7 @@ public class ChatService extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         super.afterConnectionClosed(session, status);
-        sessions.remove(session);
+        this.session.remove(session);
     }
 
 }
