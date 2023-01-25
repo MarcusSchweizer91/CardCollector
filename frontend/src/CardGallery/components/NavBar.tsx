@@ -96,7 +96,7 @@ export default function NavBar(props: NavBarProps) {
                 </ListItem>
                 <ListItem disablePadding>
                     <ListItemButton>
-                        <ListItemText><NavLink className={"dropDownNL"} to={"/chatOverview"}>Chat</NavLink></ListItemText>
+                        <ListItemText><NavLink className={"dropDownNL"} to={"/chatoverview"}>Chat</NavLink></ListItemText>
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
