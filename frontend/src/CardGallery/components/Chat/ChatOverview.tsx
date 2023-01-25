@@ -19,21 +19,22 @@ export default function ChatOverview(props: ChatOverviewProps) {
             .catch((error) => console.log(error));
     }, []);
 
-    const mapUsers = users.map((username) => {
-        if(username === props.user?.username){
-            return <></>
-        }
-        return <div className="user" key={username} onClick={() => navigate(`/chat/${username}`)}>
+
+    const filteredUsers = users.filter((username) => username !== props.user?.username);
+
+    const mapUsers = filteredUsers.map((username) => (
+        <div className="user" key={username} onClick={() => navigate(`/chat/${username}`)}>
             {username}
         </div>
-
-    })
+    ));
 
 
     return (
         <div className="users-list">
 
-            {mapUsers}
+                {mapUsers}
+
+
         </div>
     );
 }
