@@ -41,7 +41,7 @@ function App() {
                     <Route path={"/exchange/:id"} element={<ExchangeDetails/>}></Route>
                     <Route path={"/user"} element={<UserDetails isCardInFavorites={isCardInFavorites} addCardToFavorites={(id) => addCardToFavorites(id, favorites)} removeCardFromFavorites={removeCardFromFavorites} getFavoriteCards={getFavoriteCards}  userInfo={userInfo}/>}></Route>
                     <Route path="/chat/:receiverUsername" element={<UserChat user={userInfo} />}></Route>
-                    <Route path={"/chatOverview"} element={<ChatOverview user={userInfo}/>} />
+                    <Route path={"/chatoverview"} element={<ChatOverview user={userInfo}/>} />
                 </Route>
             </Routes>
         </BrowserRouter>
