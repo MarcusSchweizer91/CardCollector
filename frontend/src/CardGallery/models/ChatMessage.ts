@@ -7,6 +7,7 @@ export interface ChatMessage{
 }
 
 export interface NewChatMessage{
+    senderUsername: string
     receiverUsername: string
     message: string
 }
