@@ -4,10 +4,21 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import {Drawer, Grid, List, ListItem, ListItemButton, ListItemText, Menu, MenuItem} from "@mui/material";
+import {
+    Collapse,
+    Drawer,
+    Grid,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Menu,
+    MenuItem
+} from "@mui/material";
 import {NavLink} from "react-router-dom";
 import "../components/css/NavBar.css"
-import {AccountCircle} from "@mui/icons-material";
+import {AccountCircle, StarBorder} from "@mui/icons-material";
 import logo from "../img/Logo2.png"
 
 type Anchor = 'left';
@@ -27,6 +38,11 @@ export default function NavBar(props: NavBarProps) {
     const handleClose = () => {
         setMenu(null)
         setUserLogin(null)
+    }
+
+    const handleClick = () => {
+        handleClose();
+        props.logout();
     }
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -53,6 +69,8 @@ export default function NavBar(props: NavBarProps) {
 
                 setState({...state, [anchor]: open});
             };
+
+
 
     const list = (anchor: Anchor) => (
         <Box
@@ -94,7 +112,16 @@ export default function NavBar(props: NavBarProps) {
                         <ListItemText><NavLink className={"dropDownNL"} to={"/user"}>MyAccount</NavLink></ListItemText>
                     </ListItemButton>
                 </ListItem>
-
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        <ListItemButton sx={{ pl: 4 }}>
+                            <ListItemIcon>
+                                <StarBorder />
+                            </ListItemIcon>
+                            <ListItemText primary="Starred" />
+                        </ListItemButton>
+                    </List>
+                </Collapse>
             </List>
 
         </Box>
@@ -165,8 +192,8 @@ export default function NavBar(props: NavBarProps) {
                                 <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"}
                                                                          to={"/login"}>Login</NavLink></MenuItem>
                                 <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"}
-                                                                         to={"/newUser"}>SingUp</NavLink></MenuItem>
-                                <MenuItem onClick={props.logout}>Logout</MenuItem>
+                                                                         to={"/register"}>SingUp</NavLink></MenuItem>
+                                <MenuItem onClick={handleClick}>Logout</MenuItem>
                             </Menu>
                         </div>
                     </Grid>
