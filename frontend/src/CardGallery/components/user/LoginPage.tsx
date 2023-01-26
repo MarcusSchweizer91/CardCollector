@@ -1,8 +1,10 @@
 import {Button, TextField} from "@mui/material";
 import Box from "@mui/material/Box";
-import {ChangeEvent, FormEvent, useState} from "react";
+import React, {ChangeEvent, FormEvent, useState} from "react";
+import "../css/LoginPage.css";
 
 import {useNavigate} from "react-router-dom";
+import SendIcon from "@mui/icons-material/Send";
 
 type LoginPageProps={
     login: (username:string, password:string)=> Promise<string>
@@ -35,10 +37,11 @@ export default function LoginPage(props: LoginPageProps){
     return(
 
         <div>
-            <h2>LoginPage</h2>
+            <h2>Login</h2>
             <Box
                 component="form"
                 onSubmit={loginSubmit}
+                className={"login-box"}
             >
             <TextField
                 required
@@ -58,7 +61,9 @@ export default function LoginPage(props: LoginPageProps){
                 onChange={onChangePassword}
             />
 
-            <Button type={"submit"}>Login</Button>
+                <Button sx={{mt: 2}} type={"submit"} variant="contained" endIcon={<SendIcon/>}>
+                    Login
+                </Button>
             </Box>
         </div>
     )

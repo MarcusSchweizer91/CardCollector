@@ -1,0 +1,10 @@
+.top-margin{
+    margin-top: 3rem;
+}
+
+.register-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
