@@ -27,22 +27,22 @@ export default function ChatOverview(props: ChatOverviewProps) {
 
     const mapUsers = filteredUsers.map((username) => (
 
-            <Paper className={"paper"}>
-                <div className="user" key={username} onClick={() => navigate(`/chat/${username}`)}>
-                    {username}
-                </div>
-            </Paper>
+        <Paper className={"paper"}>
+            <div className="user" key={username} onClick={() => navigate(`/chat/${username}`)}>
+                {username}
+            </div>
+        </Paper>
 
     ));
 
 
     return (
-        <div className="users-list">
+        <div >
             <div className="chat-page-header">Direktnachrichten</div>
 
-
-            {mapUsers}
-
+            <div className="users-list">
+                {mapUsers}
+            </div>
 
         </div>
     );
