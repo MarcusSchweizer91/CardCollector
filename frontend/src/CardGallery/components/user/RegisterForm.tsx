@@ -1,6 +1,8 @@
 import {Button, TextField} from "@mui/material";
-import {ChangeEvent, FormEvent, useState} from "react";
+import React, {ChangeEvent, FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import "../css/RegisterForm.css"
+import SendIcon from "@mui/icons-material/Send";
 
 type RegisterUserProps={
     register: (username:string, password:string, email:string)=>void
@@ -41,8 +43,8 @@ export default function RegisterForm(props: RegisterUserProps){
     }
 
     return(
-        <div>
-            <form onSubmit={signUpSubmit}>
+        <div className={"top-margin"}>
+            <form className={"register-form"} onSubmit={signUpSubmit}>
                 <TextField
                     required
                     id="outlined-required"
@@ -66,7 +68,9 @@ export default function RegisterForm(props: RegisterUserProps){
                     value={email}
                     onChange={onChangeEmail}
                 />
-                <Button type={"submit"}>SignUp</Button>
+                <Button sx={{mt: 2}} type={"submit"} variant="contained" endIcon={<SendIcon/>}>
+                    Register
+                </Button>
 
             </form>
         </div>
