@@ -51,6 +51,7 @@ export default function RegisterForm(props: RegisterUserProps){
                     label="Username"
                     value={username}
                     onChange={onChangeUsername}
+                    className={"input-field"}
                 />
                 <TextField
                     required
@@ -60,6 +61,7 @@ export default function RegisterForm(props: RegisterUserProps){
                     autoComplete="current-password"
                     value={password}
                     onChange={onChangePassword}
+                    className={"input-field"}
                 />
                 <TextField
                     required
