@@ -17,7 +17,7 @@ export default function ExchangeGallery(props: ExchangeGalleryProps){
     return(
         <div>
             <Container>
-                <Grid container>
+                <Grid container justifyContent={"center"}>
                 {exchangeComponents}
                 </Grid>
             </Container>
