@@ -5,6 +5,7 @@ import "../css/LoginPage.css";
 
 import {useNavigate} from "react-router-dom";
 import SendIcon from "@mui/icons-material/Send";
+import useAuthCheck from "../hooks/useAuthCheck";
 
 type LoginPageProps={
     login: (username:string, password:string)=> Promise<string>
@@ -16,6 +17,8 @@ export default function LoginPage(props: LoginPageProps){
     const [password, setPassword] = useState<string>("")
 
     const navigate = useNavigate()
+
+
 
     function onChangeUsername(event: ChangeEvent<HTMLInputElement>){
         setUsername(event.target.value)
@@ -34,6 +37,10 @@ export default function LoginPage(props: LoginPageProps){
             })
     }
 
+    const isLoggedIn = useAuthCheck();
+    if (isLoggedIn) {
+        navigate("/");
+    }
     return(
 
         <div>
@@ -49,6 +56,7 @@ export default function LoginPage(props: LoginPageProps){
                 label="Username"
                 value={username}
                 onChange={onChangeUsername}
+                className={"input-field"}
             />
 
             <TextField
