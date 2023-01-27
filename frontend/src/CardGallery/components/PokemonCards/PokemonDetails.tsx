@@ -50,22 +50,22 @@ export default function PokemonDetails() {
             {pokeCard &&
 
                 <Stack spacing={1}>
-                    <Paper >
+                    <Paper className={"margin"}>
                         <h2>{pokeCard.name}</h2>
                     </Paper>
-                    <Paper className={"padding"} elevation={12}>
+                    <Paper className={"padding margin"} elevation={12}>
                         <img alt={""} src={pokeCard.images.small}/>
                     </Paper>
 
-                    <div >
+                    <Paper className={"margin"} >
                         <h2>Hit Points</h2>
-                        <Paper className={"padding"} elevation={12}>{pokeCard.hp} HP</Paper>
-                    </div>
-                    <div >
+                        <div className={"padding"} >{pokeCard.hp} HP</div>
+                    </Paper>
+                    <Paper className={"margin"} >
                         <h2>Attacks</h2>
                         {costCount?.map((attack) => {
                             return (
-                                <Paper elevation={12} className={"padding margin"} key={attack.name}>
+                                <div className={"padding margin"} key={attack.name}>
                                     <p>Name: {attack.name}</p>
                                     <p>Damage: {attack.damage || "Not Available"}</p>
                                     <p>Costs: {
@@ -73,10 +73,10 @@ export default function PokemonDetails() {
                                             return `${cost} x${count}`
                                         }).join(', ')
                                     }</p>
-                                </Paper>
+                                </div>
                             )
                         })}
-                    </div>
+                    </Paper>
 
                 </Stack>
 
