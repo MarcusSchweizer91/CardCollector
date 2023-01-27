@@ -91,22 +91,12 @@ export default function NavBar(props: NavBarProps) {
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemText><NavLink className={"dropDownNL"}
-                                               to={"/exchange"}>CardExchange</NavLink></ListItemText>
+                                               to={"/exchange"}>Exchange</NavLink></ListItemText>
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemText><NavLink className={"dropDownNL"} to={"/chatoverview"}>Chat</NavLink></ListItemText>
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton>
-                        <ListItemText><NavLink className={"dropDownNL"} to={"/register"}>Register</NavLink></ListItemText>
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton>
-                        <ListItemText><NavLink className={"dropDownNL"} to={"/login"}>Login</NavLink></ListItemText>
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -192,10 +182,15 @@ export default function NavBar(props: NavBarProps) {
                                 onClose={handleClose}
                             >
                                 <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"}
-                                                                         to={"/login"}>Login</NavLink></MenuItem>
+                                                                         to={"/register"}>Register</NavLink></MenuItem>
+
                                 <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"}
-                                                                         to={"/register"}>SingUp</NavLink></MenuItem>
+                                                                         to={"/login"}>Login</NavLink></MenuItem>
                                 <MenuItem onClick={handleClick}>Logout</MenuItem>
+
+
+
+
                             </Menu>
                         </div>
                     </Grid>
