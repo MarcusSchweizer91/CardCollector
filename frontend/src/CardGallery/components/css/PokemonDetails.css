@@ -1,7 +1,8 @@
 .padding{
-padding: 1rem;
+padding: .5rem;
 }
 
 .margin{
-    margin-bottom: 1rem;
+    margin-left: 4rem !important;
+    margin-right: 4rem !important;
 }
