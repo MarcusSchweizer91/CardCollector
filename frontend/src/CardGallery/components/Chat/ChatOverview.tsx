@@ -38,7 +38,7 @@ export default function ChatOverview(props: ChatOverviewProps) {
 
     return (
         <div >
-            <div className="chat-page-header">Direktnachrichten</div>
+            <div className="chat-page-header">Chat rooms</div>
 
             <div className="users-list">
                 {mapUsers}
