@@ -5,6 +5,7 @@ export default function useAuthor(author?: string) {
     const { userInfo } = useUser();
     const [canEdit, setCanEdit] = useState(false);
     const [canDelete, setCanDelete] = useState(false);
+    const [canSendMessage, setCanSendMessage] = useState(false);
 
     useEffect(() => {
         if (userInfo && userInfo.username === author) {
@@ -13,5 +14,11 @@ export default function useAuthor(author?: string) {
         }
     }, [userInfo, author]);
 
-    return { canEdit, canDelete };
+    useEffect(() => {
+        if (userInfo && userInfo.username !== author) {
+            setCanSendMessage(true);
+        }
+    }, [userInfo, author]);
+
+    return { canEdit, canDelete, canSendMessage };
 }
