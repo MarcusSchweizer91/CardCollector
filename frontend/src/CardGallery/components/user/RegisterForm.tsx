@@ -3,6 +3,7 @@ import React, {ChangeEvent, FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import "../css/RegisterForm.css"
 import SendIcon from "@mui/icons-material/Send";
+import useAuthCheck from "../hooks/useAuthCheck";
 
 type RegisterUserProps={
     register: (username:string, password:string, email:string)=>void
@@ -16,6 +17,11 @@ export default function RegisterForm(props: RegisterUserProps){
 
 
     const navigate = useNavigate()
+
+    const isLoggedIn = useAuthCheck();
+    if (isLoggedIn) {
+        navigate("/");
+    }
 
     function onChangeUsername(event: ChangeEvent<HTMLInputElement>){
         setUsername(event.target.value)
@@ -41,6 +47,8 @@ export default function RegisterForm(props: RegisterUserProps){
         navigate("/login")
 
     }
+
+
 
     return(
         <div className={"top-margin"}>
