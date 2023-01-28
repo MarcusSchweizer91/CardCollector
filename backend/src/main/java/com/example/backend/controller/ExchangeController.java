@@ -3,6 +3,7 @@ package com.example.backend.controller;
 
 import com.example.backend.models.ExchangeCard;
 import com.example.backend.service.ExchangeService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,8 +37,8 @@ public class ExchangeController {
         return exchangeService.getEntryByID(id);
     }
 
-    @PutMapping(path = "/{id}")
-    public ExchangeCard updateEntry(@PathVariable String id, @RequestPart(value = "entry") String entryToUpdate, @RequestPart(value = "file") MultipartFile cardImage, String author) throws IOException {
+    @PutMapping(path = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ExchangeCard updateEntry(@PathVariable String id, @RequestPart(value = "entry") String entryToUpdate, @RequestPart(value = "file", required = false) MultipartFile cardImage, @RequestPart(value = "author", required = false) String author) throws IOException {
         return exchangeService.updateEntry(id, entryToUpdate, cardImage, author);
     }
 

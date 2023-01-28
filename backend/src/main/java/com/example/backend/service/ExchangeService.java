@@ -64,22 +64,29 @@ public class ExchangeService {
     }
 
     public ExchangeCard updateEntry (String id, String exchangeCard, MultipartFile cardImage, String author) throws IOException {
-
         ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
         ExchangeCardDTO exchangeCardDTO = objectMapper.readValue(exchangeCard, ExchangeCardDTO.class);
-       
+
+        ExchangeCard existingCard = exchangeRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid card Id:" + id));
+        String base64Image = cardImage != null && !cardImage.isEmpty() ? Base64.getEncoder().encodeToString(cardImage.getBytes()) : existingCard.base64Image();
 
         ExchangeCard toEdit = new ExchangeCard(
                 id,
-                exchangeCardDTO.name(),
-                exchangeCardDTO.description(),
-                exchangeCardDTO.type(),
-                exchangeCardDTO.price(),
-                exchangeCardDTO.alternative(),
-                Base64.getEncoder().encodeToString(cardImage.getBytes()),
-                author);
+                exchangeCardDTO.name() != null ? exchangeCardDTO.name() : existingCard.name(),
+                exchangeCardDTO.description() != null ? exchangeCardDTO.description() : existingCard.description(),
+                exchangeCardDTO.type() != null ? exchangeCardDTO.type() : existingCard.type(),
+                exchangeCardDTO.price() != null ? exchangeCardDTO.price() : existingCard.price(),
+                exchangeCardDTO.alternative() != null ? exchangeCardDTO.alternative() : existingCard.alternative(),
+                base64Image,
+                author
+        );
         return exchangeRepo.save(toEdit);
+
+
+
     }
+
+
 
 
 }
