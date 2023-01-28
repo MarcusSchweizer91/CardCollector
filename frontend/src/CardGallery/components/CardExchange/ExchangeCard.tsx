@@ -27,7 +27,7 @@ export default function ExchangeCard(props: ExchangeCardProps) {
 
 
     const authors = props.exchangeCard && props.exchangeCard.author;
-    const { canEdit, canDelete } = useAuthor(authors);
+    const { canEdit, canDelete, canSendMessage } = useAuthor(authors);
 
 
 
@@ -132,9 +132,10 @@ export default function ExchangeCard(props: ExchangeCardProps) {
                         <Button onClick={handleChange} variant={"outlined"} size="small" color="primary" className={showButton? "show" : "disappear"}>
                             Save
                         </Button>
-                        <Button onClick={handleChatButtonOnClick} variant={"outlined"} size="small" color="primary">
+
+                        {canSendMessage && ( <Button onClick={handleChatButtonOnClick} variant={"outlined"} size="small" color="primary">
                             Send Message
-                        </Button>
+                        </Button>)}
                     </CardActions>
                 </Card>
             </Grid>
