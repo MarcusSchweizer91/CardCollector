@@ -3,6 +3,7 @@ import {Button, Card, CardActions, CardContent, CardMedia, Grid, Typography} fro
 import {useNavigate} from "react-router-dom";
 import {ChangeEvent, useState} from "react";
 import "../css/ExchangeCard.css"
+import useAuthor from "../hooks/useAuthor";
 
 
 type ExchangeCardProps = {
@@ -23,6 +24,12 @@ export default function ExchangeCard(props: ExchangeCardProps) {
     const [price, setPrice] = useState(props.exchangeCard.price)
     const [alternative, setAlternative] = useState(props.exchangeCard.alternative)
     const [author] = useState(props.exchangeCard.author)
+
+
+    const authors = props.exchangeCard && props.exchangeCard.author;
+    const { canEdit, canDelete } = useAuthor(authors);
+
+
 
 
     function onClickEditButton() {
@@ -110,13 +117,18 @@ export default function ExchangeCard(props: ExchangeCardProps) {
 
 
                     <CardActions>
-                        <Button variant={"outlined"} onClick={onClickDelete} size="small" color="primary">
+                        {canDelete && (<Button variant={"outlined"} onClick={onClickDelete} size="small" color="primary">
                             Delete
-                        </Button>
+                        </Button>)}
                         <Button onClick={handleDetailsClick} variant={"outlined"} size="small" color="primary">
                             Details
                         </Button>
-                        <Button onClick={onClickEditButton} variant={"outlined"} size="small" color="primary" className={showButton? "disappear" : "show"} > Edit </Button>
+                        {canEdit && (<Button onClick={onClickEditButton}
+                                variant={"outlined"}
+                                size="small"
+                                color="primary"
+                                className={showButton? "disappear" : "show"} > Edit
+                        </Button>)}
                         <Button onClick={handleChange} variant={"outlined"} size="small" color="primary" className={showButton? "show" : "disappear"}>
                             Save
                         </Button>
