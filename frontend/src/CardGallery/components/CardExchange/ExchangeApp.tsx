@@ -54,10 +54,18 @@ export default function ExchangeApp() {
     }
 
     function editEntry(newEdit: CardToExchange){
-        axios.put("/api/exchange/" + newEdit.id, newEdit)
+        let formData = new FormData();
+        if (newEdit.image){
+            formData.append("file", newEdit.image[0]);
+        }
+        formData.append("entry", JSON.stringify(newEdit))
+        if (newEdit.author) {
+            formData.append("author", newEdit.author);
+        }        axios.put("/api/exchange/" + newEdit.id, formData)
             .then(getExchangeCards)
-
     }
+
+
     return (
         <div>
             <ExchangeForm addEntry={addExchangeCard}/>
