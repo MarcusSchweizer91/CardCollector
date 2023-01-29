@@ -1,6 +1,6 @@
 # CardCollector 
 
-the online TradingCard Plattform
+the Trading Card Exchange Plattform
 
 
 Frontend: [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=marcusschweizer91_CardCollector-frontend&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=marcusschweizer91_CardCollector-frontend)
