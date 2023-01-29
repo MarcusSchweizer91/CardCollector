@@ -1,10 +1,12 @@
 .user {
     cursor: pointer;
-    font-size: large;
+    font-size: medium;
 
 
 }
 
 .paper{
-    margin: 1rem 0;
+    margin: 2rem 0;
+
+
 }
