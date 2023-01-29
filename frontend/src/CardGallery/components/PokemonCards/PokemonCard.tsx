@@ -60,9 +60,6 @@ export default function PokemonCard(props: PokemonCardProps) {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    {/*<Button onClick={addCardIdOnClick} variant={"outlined"} size="small" color="primary">*/}
-                    {/*    Add to Favorites*/}
-                    {/*</Button>*/}
 
                     <Checkbox
                         checked={props.isCardInFavorites(props.card.id)}
