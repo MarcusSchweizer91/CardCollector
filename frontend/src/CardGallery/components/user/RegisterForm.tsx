@@ -24,7 +24,8 @@ export default function RegisterForm(props: RegisterUserProps){
     const [password, setPassword] = useState<string>("")
     const [email, setEmail] = useState<string>("")
     const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState("");
+    const [snackbarMessageSuccess, setSnackbarMessageSuccess] = useState("");
+    const [snackbarMessageAlready, setSnackbarMessageAlready] = useState("");
 
 
     const navigate = useNavigate()
@@ -33,7 +34,7 @@ export default function RegisterForm(props: RegisterUserProps){
     useEffect(() => {
         if (isLoggedIn) {
             setOpenSnackbar(true);
-            setSnackbarMessage("Already logged in");
+            setSnackbarMessageAlready("Already logged in");
             setTimeout(() => {
                 navigate("/");
             }, 1500);
@@ -46,7 +47,8 @@ export default function RegisterForm(props: RegisterUserProps){
             return;
         }
         setOpenSnackbar(false);
-        setSnackbarMessage("");
+        setSnackbarMessageSuccess("");
+        setSnackbarMessageAlready("");
     }
 
     function onChangeUsername(event: ChangeEvent<HTMLInputElement>){
@@ -67,10 +69,17 @@ export default function RegisterForm(props: RegisterUserProps){
         event.preventDefault()
 
         props.register(username, password, email)
+
         setUsername("")
         setPassword("")
         setEmail("")
-        navigate("/login")
+        setOpenSnackbar(true);
+        setSnackbarMessageSuccess("Successfully registered!");
+        setTimeout(()=>{
+            navigate("/login")
+        }, 1500)
+
+
 
     }
 
@@ -110,8 +119,8 @@ export default function RegisterForm(props: RegisterUserProps){
 
             </form>
             <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
-                <Alert onClose={handleCloseSnackbar} severity={"error"} sx={{ width: '100%' }}>
-                    {snackbarMessage}
+                <Alert onClose={handleCloseSnackbar} severity={snackbarMessageAlready ? "error" : "success"} sx={{ width: '100%' }}>
+                    {snackbarMessageAlready || snackbarMessageSuccess}
                 </Alert>
             </Snackbar>
 
