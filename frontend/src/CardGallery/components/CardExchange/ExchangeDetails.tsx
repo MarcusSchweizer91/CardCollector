@@ -5,7 +5,7 @@ import axios from "axios";
 import {CardToExchange} from "../../models/CardToExchange";
 import {Paper, Stack} from "@mui/material";
 import Box from "@mui/material/Box";
-
+import "../css/ExchangeCardDetails.css"
 
 export default function ExchangeDetails() {
 
@@ -37,18 +37,16 @@ export default function ExchangeDetails() {
             {exchangeEntry &&
 
                 <Stack spacing={1}>
-                    <Paper>
-                        <Paper >
+                    <Paper className={"margin-sides"}>
+                        <Paper className={"padding"} >
                             <h2>{exchangeEntry.name}</h2>
                         </Paper>
-                        <Box>
-                            <p>Card description: {exchangeEntry.description}</p>
+                        <Box className={"padding"}>
+                            <p>Card description: <br/> {exchangeEntry.description}</p>
+                            <p className={"padding"}>Search or Offer: <br/> {exchangeEntry.type}</p>
+                            <p className={"padding"}>Price: <br/> {exchangeEntry.price} EUR</p>
+                            <p className={"padding"}>Alternative Trade: <br/> {exchangeEntry.alternative}</p>
                         </Box>
-                        <div>
-                            <p>Search or Offer: {exchangeEntry.type}</p>
-                            <p>Price: {exchangeEntry.price} EUR</p>
-                            <p>Alternative Trade: {exchangeEntry.alternative}</p>
-                        </div>
                     </Paper>
                 </Stack>
 
