@@ -9,6 +9,8 @@ function useAuthCheck() {
             .then(response => {
                 if (response.data && response.data.username !== "unknownUser") {
                     setIsLoggedIn(true);
+                } else {
+                    setIsLoggedIn(false)
                 }
             });
     }, []);
