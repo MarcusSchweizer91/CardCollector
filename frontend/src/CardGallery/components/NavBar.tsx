@@ -125,7 +125,7 @@ export default function NavBar(props: NavBarProps) {
                 </ListItem>
                 <ListItem disablePadding>
                     <ListItemButton>
-                        <ListItemText><NavLink className={"dropDownNL"} to={"/user"}>MyAccount</NavLink></ListItemText>
+                        <ListItemText><NavLink className={"dropDownNL"} to={"/user"}>Your Profile</NavLink></ListItemText>
                     </ListItemButton>
                 </ListItem>
                 <Collapse in={open} timeout="auto" unmountOnExit>
