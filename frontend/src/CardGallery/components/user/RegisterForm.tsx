@@ -1,26 +1,52 @@
 import {Button, TextField} from "@mui/material";
-import React, {ChangeEvent, FormEvent, useState} from "react";
+import React, {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import "../css/RegisterForm.css"
 import SendIcon from "@mui/icons-material/Send";
 import useAuthCheck from "../hooks/useAuthCheck";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, {AlertProps} from "@mui/material/Alert";
 
 type RegisterUserProps={
     register: (username:string, password:string, email:string)=>void
 }
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref,
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function RegisterForm(props: RegisterUserProps){
 
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [email, setEmail] = useState<string>("")
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
 
 
     const navigate = useNavigate()
 
     const isLoggedIn = useAuthCheck();
-    if (isLoggedIn) {
-        navigate("/");
+    useEffect(() => {
+        if (isLoggedIn) {
+            setOpenSnackbar(true);
+            setSnackbarMessage("Already logged in");
+            setTimeout(() => {
+                navigate("/");
+            }, 1500);
+
+        }
+    }, [isLoggedIn, navigate])
+
+    const handleCloseSnackbar = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
+        setSnackbarMessage("");
     }
 
     function onChangeUsername(event: ChangeEvent<HTMLInputElement>){
@@ -83,6 +109,12 @@ export default function RegisterForm(props: RegisterUserProps){
                 </Button>
 
             </form>
+            <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity={"error"} sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
+
         </div>
     )
 }
