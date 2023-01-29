@@ -217,7 +217,7 @@ export default function NavBar(props: NavBarProps) {
 
                             </Menu>
                         </div>
-                        <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={() => setOpenSnackbar(false)}>
+                        <Snackbar open={openSnackbar} autoHideDuration={1500} onClose={() => setOpenSnackbar(false)}>
                             <Alert onClose={() => setOpenSnackbar(false)} severity="success" sx={{ width: '100%' }}>
                                 {snackbarMessage}
                             </Alert>
