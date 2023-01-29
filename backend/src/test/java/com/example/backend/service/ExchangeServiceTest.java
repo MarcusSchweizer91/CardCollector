@@ -5,8 +5,12 @@ package com.example.backend.service;
 import com.example.backend.models.ExchangeCard;
 
 
+import com.example.backend.models.ExchangeCardDTO;
 import com.example.backend.repo.ExchangeRepo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -117,34 +121,37 @@ class ExchangeServiceTest {
 
 
     @Test
-    void updateEntry() throws IOException {
-        // Given
-        String exchangeCardDTO = "{\"name\":\"Pikachu\",\"description\":\"Super Karte\",\"type\":\"Search\",\"price\":\"12\",\"alternative\":\"Trade for two Bisasam\"}";
-        MultipartFile cardImage = mock(MultipartFile.class);
-        when(cardImage.getBytes()).thenReturn("image bytes".getBytes());
+    void testUpdateEntry() throws IOException {
+        String id = "1";
+        String exchangeCard = "{\"name\":\"Test Card\",\"description\":\"Test Description\",\"type\":\"Test Type\",\"price\":10,\"alternative\":\"Test Alternative\"}";
+        MockMultipartFile cardImage = new MockMultipartFile("cardImage", "test.jpg", "image/jpeg", "Test Image".getBytes());
+        String author = "Test Author";
 
-        ExchangeCard expectedCard = new ExchangeCard(
-                "1",
-                "Pikachu",
-                "Super Karte",
-                "Search",
-                "12",
-                "Trade for two Bisasam",
-                Base64.getEncoder().encodeToString(cardImage.getBytes()),
-                "Bob"
+        ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
+        ExchangeCardDTO exchangeCardDTO = objectMapper.readValue(exchangeCard, ExchangeCardDTO.class);
+        ExchangeCard existingCard = new ExchangeCard("1", "Existing Card", "Existing Description", "Existing Type", "20", "Existing Alternative", null, "Existing Author");
+        String base64Image = Base64.getEncoder().encodeToString(cardImage.getBytes());
+
+        ExchangeCard toEdit = new ExchangeCard(
+                id,
+                exchangeCardDTO.name(),
+                exchangeCardDTO.description(),
+                exchangeCardDTO.type(),
+                exchangeCardDTO.price(),
+                exchangeCardDTO.alternative(),
+                base64Image,
+                author
         );
 
-        // When
-        when(exchangeRepo.findById("1")).thenReturn(Optional.of(expectedCard));
-        when(exchangeRepo.save(expectedCard)).thenReturn(expectedCard);
+        when(exchangeRepo.findById(id)).thenReturn(Optional.of(existingCard));
+        when(exchangeRepo.save(toEdit)).thenReturn(toEdit);
 
-        ExchangeCard actualCard = exchangeService.updateEntry("1", exchangeCardDTO, cardImage, "Bob");
+        ExchangeCard result = exchangeService.updateEntry(id, exchangeCard, cardImage, author);
 
-        // Then
-        assertEquals(expectedCard, actualCard);
-        verify(exchangeRepo).save(expectedCard);
+        assertEquals(toEdit, result);
+        verify(exchangeRepo, times(1)).findById(id);
+        verify(exchangeRepo, times(1)).save(toEdit);
     }
-
 
 
 
