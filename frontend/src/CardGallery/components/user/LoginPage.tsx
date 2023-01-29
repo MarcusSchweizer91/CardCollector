@@ -38,7 +38,7 @@ export default function LoginPage(props: LoginPageProps){
             setSnackbarMessageError("Already logged in!");
             setTimeout(() => {
                 navigate("/");
-            }, 3000); //3000ms bis zur Umleitung
+            }, 1500);
         }
     }, [isLoggedIn, navigate])
 
