@@ -9,7 +9,7 @@ import {
     CardActions,
     CardContent,
     CardMedia, Checkbox,
-    Grid,
+    Grid, Stack,
     Typography
 } from "@mui/material";
 import {useNavigate} from "react-router-dom";
@@ -18,8 +18,8 @@ import {Favorite, FavoriteBorder} from "@mui/icons-material";
 type UserDetailsProps = {
 
     userInfo?: UserData
-    addCardToFavorites(id:string):void
-    isCardInFavorites:(cardId: string) => boolean
+    addCardToFavorites(id: string): void
+    isCardInFavorites: (cardId: string) => boolean
     getFavoriteCards: () => Promise<string[]>
     removeCardFromFavorites: (cardId: string) => Promise<void>
 }
@@ -56,26 +56,25 @@ export default function UserDetails(props: UserDetailsProps) {
     }
 
 
-
     return (
         <div>
             {!userInfo && <p>loading...</p>}
             {userInfo &&
                 <div>
-                    <Card>
-                        <h2>UserData:</h2>
-                        <h3>{userInfo.username}</h3>
-                        <p>{userInfo.email}</p>
-
-                    </Card>
-
+                    <Stack direction={"column"} spacing={2} >
+                        <Card>
+                            <h2>Profile:</h2>
+                            <h4>Username: {userInfo.username}</h4>
+                            <h4>Email: {userInfo.email}</h4>
+                        </Card>
+                    </Stack>
                     <h2>Favorite Cards:</h2>
                     <Grid container justifyContent={"space-evenly"}>
                         {cardsToDisplay.map(card => (
 
 
-                            <Card key={card.id}>
-                                <CardActionArea onClick={()=>handleDetailsClick(card.id)}>
+                            <Card key={card.id} sx={{mt:1}}>
+                                <CardActionArea onClick={() => handleDetailsClick(card.id)}>
                                     <div key={card.id}>
                                         <CardMedia
                                             component="img"
@@ -95,9 +94,9 @@ export default function UserDetails(props: UserDetailsProps) {
                                         checked={props.isCardInFavorites(card.id)}
                                         onChange={handleDeleteFavoriteOnClick}
                                         value={card.id}
-                                        inputProps={{ 'aria-label': 'controlled' }}
-                                        icon={<FavoriteBorder />}
-                                        checkedIcon={<Favorite />}
+                                        inputProps={{'aria-label': 'controlled'}}
+                                        icon={<FavoriteBorder/>}
+                                        checkedIcon={<Favorite/>}
                                     />
                                     <Button href="/exchange"
                                             variant={"outlined"}
