@@ -153,6 +153,34 @@ class ExchangeServiceTest {
         verify(exchangeRepo, times(1)).save(toEdit);
     }
 
+    @Test
+    void updateEntryWithoutChanges() throws IOException {
+        // Given
+        String exchangeCardDTO = "{}";
+        MultipartFile cardImage = mock(MultipartFile.class);
+        when(cardImage.getBytes()).thenReturn("image bytes".getBytes());
+
+        ExchangeCard existingCard = new ExchangeCard(
+                "1",
+                "Pikachu",
+                "Super Karte",
+                "Search",
+                "12",
+                "Trade for two Bisasam",
+                Base64.getEncoder().encodeToString(cardImage.getBytes()),
+                "Bob"
+        );
+
+        // When
+        when(exchangeRepo.findById("1")).thenReturn(Optional.of(existingCard));
+        when(exchangeRepo.save(existingCard)).thenReturn(existingCard);
+
+        ExchangeCard actualCard = exchangeService.updateEntry("1", exchangeCardDTO, cardImage, "Bob");
+
+        // Then
+        assertEquals(existingCard, actualCard);
+        verify(exchangeRepo).save(existingCard);
+    }
 
 
 
