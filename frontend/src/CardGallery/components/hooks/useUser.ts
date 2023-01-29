@@ -18,7 +18,7 @@ export default function useUser() {
             .then(response => response.data)
             .then((data)=>{
                 setUsername(data)
-                return data
+                return "Successfully logged out!"
             })
     }
 
