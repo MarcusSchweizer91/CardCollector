@@ -3,7 +3,7 @@ import PokemonGallery from "./PokemonGallery";
 import SearchBar from "../SearchBar";
 import useCards from "../hooks/useCards";
 import "../css/PokemonApp.css"
-import bg from "../../img/pokemon-pokemon-red-and-blue-blastoise-pokemon-bulbasaur-pokemon-wallpaper-preview.jpeg";
+import bg from "../../img/pokemon_header.jpeg";
 
 
 type PokemonAppProps = {
