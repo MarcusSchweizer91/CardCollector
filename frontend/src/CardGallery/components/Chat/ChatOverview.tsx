@@ -26,7 +26,7 @@ export default function ChatOverview(props: ChatOverviewProps) {
     const filteredUsers = users.filter((username) => username !== props.user?.username);
 
     const mapUsers = filteredUsers.map((username) => (
-        <Stack>
+        <Stack key={username}>
             <Button sx={{m:2}} variant={"outlined"}>
                 <div className="user" key={username} onClick={() => navigate(`/chat/${username}`)}>
                     {username}
