@@ -72,7 +72,7 @@ export default function LoginPage(props: LoginPageProps){
                 setSnackbarMessageSuccess("Successfully logged in!");
                 setTimeout(() => {
                     navigate("/");
-                }, 1500);
+                }, 1000);
             })
             .catch(() => {
                 setOpenSnackbar(true);
@@ -114,7 +114,7 @@ export default function LoginPage(props: LoginPageProps){
                     Login
                 </Button>
             </Box>
-            <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+            <Snackbar open={openSnackbar} autoHideDuration={1500} onClose={handleCloseSnackbar}>
                 <Alert onClose={handleCloseSnackbar} severity={snackbarMessageError ? "error" : "success"} sx={{ width: '100%' }}>
                     {snackbarMessageError || snackbarMessageSuccess}
                 </Alert>
