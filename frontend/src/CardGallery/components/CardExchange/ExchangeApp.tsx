@@ -4,6 +4,7 @@ import axios from "axios";
 import {useEffect, useState} from "react";
 import ExchangeForm from "./ExchangeForm";
 import SearchBar from "../SearchBar";
+import {Card} from "@mui/material";
 
 export default function ExchangeApp() {
 
@@ -29,9 +30,9 @@ export default function ExchangeApp() {
             .catch(e => console.error(e))
     }
 
-    const addExchangeCard = (newCard: CardToExchange, ) => {
+    const addExchangeCard = (newCard: CardToExchange,) => {
         let formData = new FormData();
-        if (newCard.image){
+        if (newCard.image) {
             formData.append("file", newCard.image[0]);
         }
 
@@ -53,24 +54,31 @@ export default function ExchangeApp() {
             })
     }
 
-    function editEntry(newEdit: CardToExchange){
+    function editEntry(newEdit: CardToExchange) {
         let formData = new FormData();
-        if (newEdit.image){
+        if (newEdit.image) {
             formData.append("file", newEdit.image[0]);
         }
         formData.append("entry", JSON.stringify(newEdit))
         if (newEdit.author) {
             formData.append("author", newEdit.author);
-        }        axios.put("/api/exchange/" + newEdit.id, formData)
+        }
+        axios.put("/api/exchange/" + newEdit.id, formData)
             .then(getExchangeCards)
     }
 
 
     return (
         <div>
+            <h2>Card Exchange</h2>
+            <Card variant={"outlined"} sx={{my:'2rem', mx:'5rem'}}>
+                <p> Here, you can offer your cards for trade or search for cards you're interested in. <br/>
+                    Connect with other collectors and engage in trades or purchase cards directly. Start building your collection
+                    today!</p>
+            </Card>
             <ExchangeForm addEntry={addExchangeCard}/>
             <SearchBar handleSearchText={handleSearchTextOnChange}/>
-            <ExchangeGallery editEntry={editEntry}  entries={filteredExchangeCards} deleteEntry={deleteEntries}/>
+            <ExchangeGallery editEntry={editEntry} entries={filteredExchangeCards} deleteEntry={deleteEntries}/>
 
         </div>
     )
