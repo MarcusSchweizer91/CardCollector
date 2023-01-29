@@ -5,6 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
+
     Collapse,
     Drawer,
     Grid,
@@ -17,18 +18,29 @@ import {
     MenuItem
 } from "@mui/material";
 import {NavLink, useNavigate} from "react-router-dom";
-import "../components/css/NavBar.css"
 import {AccountCircle, StarBorder} from "@mui/icons-material";
 import logo from "../img/Logo2.png"
-
+import {useState} from "react";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import "../components/css/NavBar.css"
 type Anchor = 'left';
+
+
 type NavBarProps ={
     logout:() => Promise<string>
 }
 
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref,
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function NavBar(props: NavBarProps) {
-
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
     const [menu, setMenu] = React.useState<null | HTMLElement>(null)
     const [userLogin, setUserLogin] = React.useState<null | HTMLElement>(null)
     const [state, setState] = React.useState({
@@ -40,16 +52,28 @@ export default function NavBar(props: NavBarProps) {
 
     const navigate = useNavigate()
 
-    const handleClose = () => {
+    const handleCloseLoginMenu = () => {
         setMenu(null)
         setUserLogin(null)
     }
 
-    const handleClick = () => {
-        handleClose();
-        props.logout();
-        navigate("/");
-    }
+    const handleLogout = async () => {
+        try {
+            const message = await props.logout();
+            setSnackbarMessage(message);
+            setOpenSnackbar(true);
+            handleCloseLoginMenu();
+            navigate("/");
+
+        } catch (error) {
+            setSnackbarMessage("Error while logging out!");
+            setOpenSnackbar(true);
+        }
+    };
+
+
+
+
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setUserLogin(event.currentTarget);
@@ -179,23 +203,30 @@ export default function NavBar(props: NavBarProps) {
                                     horizontal: 'right',
                                 }}
                                 open={Boolean(userLogin)}
-                                onClose={handleClose}
+                                onClose={handleCloseLoginMenu}
                             >
-                                <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"}
+                                <MenuItem onClick={handleCloseLoginMenu}><NavLink className={"loginDropDown"}
                                                                          to={"/register"}>Register</NavLink></MenuItem>
 
-                                <MenuItem onClick={handleClose}><NavLink className={"loginDropDown"}
+                                <MenuItem onClick={handleCloseLoginMenu}><NavLink className={"loginDropDown"}
                                                                          to={"/login"}>Login</NavLink></MenuItem>
-                                <MenuItem onClick={handleClick}>Logout</MenuItem>
+                                <MenuItem onClick={handleLogout}>Logout</MenuItem>
 
 
 
 
                             </Menu>
                         </div>
+                        <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={() => setOpenSnackbar(false)}>
+                            <Alert onClose={() => setOpenSnackbar(false)} severity="success" sx={{ width: '100%' }}>
+                                {snackbarMessage}
+                            </Alert>
+                        </Snackbar>
                     </Grid>
                 </Toolbar>
             </AppBar>
+
         </Box>
+
     );
 }
