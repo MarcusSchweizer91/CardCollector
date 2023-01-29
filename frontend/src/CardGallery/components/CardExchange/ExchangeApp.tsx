@@ -72,8 +72,7 @@ export default function ExchangeApp() {
         <div>
             <h2>Card Exchange</h2>
             <Card variant={"outlined"} sx={{my:'2rem', mx:'5rem'}}>
-                <p> Here, you can offer your cards for trade or search for cards you're interested in. <br/>
-                    Connect with other collectors and engage in trades or purchase cards directly. Start building your collection
+                <p> Connect with other collectors and engage in trades or purchase cards directly. <br/> Start building your collection
                     today!</p>
             </Card>
             <ExchangeForm addEntry={addExchangeCard}/>
