@@ -98,7 +98,7 @@ export default function ExchangeCard(props: ExchangeCardProps) {
                                }} value={type}/>
 
                         <Typography gutterBottom variant="body1" component="div">
-                            {props.exchangeCard.price}
+                             <p>{props.exchangeCard.price} EUR</p>
                         </Typography>
                         <input className={showButton ? "show" : "disappear"} type={"text"}
                                onChange={(event: ChangeEvent<HTMLInputElement>) => {
