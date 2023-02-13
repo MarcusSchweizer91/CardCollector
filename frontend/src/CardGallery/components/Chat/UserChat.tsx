@@ -32,7 +32,7 @@ export default function UserChat(props: ChatOverviewProps) {
             })
             .catch((error) => console.log(error));
 
-        const ws = new WebSocket(`ws://localhost:8080/api/ws/chat`);
+        const ws = new WebSocket(`ws://cardcollectorapp.fly.dev/api/ws/chat`);
         setWs(ws);
 
         ws.onmessage = (event) => {
